@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
-import { useState } from 'react'
-import { toggleLike, toggleFavorite } from '../services/api'
-import toast from 'react-hot-toast'
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useState, useRef, useEffect } from 'react';
+import { toggleLike, toggleFavorite } from '../services/api';
+import toast from 'react-hot-toast';
 
 const ArtworkCard = ({ artwork, onLikeUpdate, onFavoriteUpdate, showActions = true }) => {
   const { user } = useAuth()
@@ -68,127 +68,70 @@ const ArtworkCard = ({ artwork, onLikeUpdate, onFavoriteUpdate, showActions = tr
     }
   }
 
+  // GSAP hover nuance (optional)
+  const cardRef = useRef(null);
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    // Subtle 3D effect
+    // gsap.set(el, { transformPerspective: 800 });
+  }, []);
+
   return (
-    <Link to={`/artworks/${artwork._id}`} className="group">
-      <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 card-hover h-full">
-        {/* Image Container */}
-        <figure className="relative aspect-square overflow-hidden">
-          <img 
-            src={artwork.imageUrl} 
+    <Link to={`/artworks/${artwork._id}`} className="group" ref={cardRef}>
+      <div className="group relative flex flex-col rounded-3xl bg-[#070b1b] border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden transition-transform duration-300 hover:-translate-y-2">
+        {/* Image */}
+        <div className="relative">
+          <img
+            src={artwork.imageUrl}
             alt={artwork.title}
-            className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
+            className="h-64 w-full object-cover transform-gpu transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
           />
-          
-          {/* Overlay with Actions */}
-          {showActions && (
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-              {/* Like Button */}
-              <button
-                onClick={handleLike}
-                disabled={isLiking}
-                className={`btn btn-circle ${isLiked ? 'btn-error' : 'btn-ghost'} text-white`}
-                title={isLiked ? 'Unlike' : 'Like'}
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className={`h-6 w-6 ${isLiked ? 'fill-current' : ''}`}
-                  fill={isLiked ? 'currentColor' : 'none'}
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" 
-                  />
-                </svg>
-              </button>
+          {/* Gradient overlay */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/70 via-black/40 to-transparent" />
+          {/* Category badge */}
+          <span className="absolute top-3 right-3 rounded-full bg-purple-500/90 px-3 py-1 text-xs font-semibold text-white shadow-lg">
+            {artwork.category}
+          </span>
+        </div>
 
-              {/* Favorite Button */}
-              <button
-                onClick={handleFavorite}
-                disabled={isFavoriting}
-                className="btn btn-circle btn-ghost text-white"
-                title="Add to favorites"
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-6 w-6" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" 
-                  />
-                </svg>
-              </button>
-            </div>
-          )}
-
-          {/* Category Badge */}
-          <div className="absolute top-2 right-2">
-            <span className="badge badge-primary badge-sm">{artwork.category}</span>
+        {/* Content */}
+        <div className="flex flex-1 flex-col justify-between p-4 sm:p-5 gap-3 text-slate-100">
+          <div>
+            <h3 className="text-lg font-semibold line-clamp-1">{artwork.title}</h3>
+            <p className="text-sm text-slate-400 line-clamp-2">{artwork.description}</p>
           </div>
-        </figure>
-
-        {/* Card Body */}
-        <div className="card-body p-4">
-          <h3 className="card-title text-lg line-clamp-1">{artwork.title}</h3>
-          
-          <p className="text-sm text-base-content/70 line-clamp-2">
-            {artwork.description}
-          </p>
-
-          <div className="flex items-center justify-between mt-2">
-            {/* Artist Info */}
-            <div className="flex items-center gap-2">
-              <div className="avatar placeholder">
-                <div className="bg-neutral text-neutral-content rounded-full w-8">
-                  <span className="text-xs">{artwork.userName?.charAt(0) || 'A'}</span>
-                </div>
-              </div>
-              <span className="text-sm font-medium">{artwork.userName || 'Anonymous'}</span>
-            </div>
-
-            {/* Like Count */}
-            <div className="flex items-center gap-1">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-4 w-4 text-error" 
-                fill="currentColor" 
-                viewBox="0 0 24 24"
-              >
+          {/* Artist row */}
+          <div className="mt-1 flex items-center gap-3 text-xs text-slate-400">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-sm font-semibold text-white">
+              {artwork.userName?.charAt(0) || 'A'}
+            </span>
+            <span>{artwork.userName || 'Anonymous'}</span>
+          </div>
+          {/* Price + likes row */}
+          <div className="mt-2 flex items-center justify-between text-xs">
+            <span className="rounded-full bg-emerald-500/10 text-emerald-300 px-3 py-1 font-semibold border border-emerald-400/40">
+              {artwork.price ? `$${artwork.price}` : 'Free'}
+            </span>
+            <span className="flex items-center gap-1 text-pink-400">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              <span className="text-sm font-medium">{likesCount}</span>
-            </div>
+              {likesCount}
+            </span>
           </div>
-
-          {/* Medium & Price */}
-          <div className="flex items-center justify-between mt-2 text-xs text-base-content/60">
-            <span>{artwork.medium}</span>
-            {artwork.price && <span className="font-semibold text-primary">${artwork.price}</span>}
-          </div>
-
-          {/* View Details Button */}
-          <div className="card-actions justify-end mt-4">
-            <button className="btn btn-primary btn-sm w-full">
-              View Details
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
+          {/* View Details button */}
+          <button className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-purple-500/40 hover:brightness-110 transition">
+            View Details
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
       </div>
     </Link>
-  )
+  );
 }
 
 export default ArtworkCard
