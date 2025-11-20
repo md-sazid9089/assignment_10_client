@@ -63,7 +63,7 @@ const ArtworkDetails = () => {
     try {
       const data = await getArtworksByUser(userEmail)
       // Filter out current artwork and limit to 4
-      const otherArtworks = (data.artworks || [])
+      const otherArtworks = (data.data || [])
         .filter(art => art._id !== id)
         .slice(0, 4)
       setArtistArtworks(otherArtworks)
@@ -107,7 +107,6 @@ const ArtworkDetails = () => {
       const response = await toggleLike(id)
       setIsLiked(response.isLiked)
       setLikesCount(response.likesCount)
-      
       toast.success(response.isLiked ? 'Added to likes' : 'Removed from likes')
     } catch (error) {
       console.error('Error toggling like:', error)

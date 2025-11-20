@@ -70,7 +70,7 @@ export const getPublicArtworks = async (params = {}) => {
  * @param {string} id - Artwork ID
  */
 export const getArtworkById = async (id) => {
-  const response = await api.get(`/artworks/${id}`)
+  const response = await api.get(`/api/artworks/${id}`)
   return response.data
 }
 
@@ -79,7 +79,7 @@ export const getArtworkById = async (id) => {
  * @param {string} email - User email
  */
 export const getArtworksByUser = async (email) => {
-  const response = await api.get(`/artworks/user/${email}`)
+  const response = await api.get(`/api/artworks/user/${email}`)
   return response.data
 }
 
@@ -116,7 +116,7 @@ export const deleteArtwork = async (id) => {
  * @param {string} id - Artwork ID
  */
 export const toggleLike = async (id) => {
-  const response = await api.patch(`/artworks/${id}/like`)
+  const response = await api.patch(`/api/artworks/${id}/like`)
   return response.data
 }
 
