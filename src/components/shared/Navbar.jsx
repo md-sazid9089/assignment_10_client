@@ -35,93 +35,63 @@ const Navbar = () => {
           Explore
         </NavLink>
       </li>
-      {user && (
-        <>
-          <li>
-            <NavLink 
-              to="/add-artwork" 
-              className={({ isActive }) => 
-                isActive ? 'text-primary font-semibold' : 'hover:text-primary'
-              }
-            >
-              Add Artwork
-            </NavLink>
-          </li>
-          <li>
-            <NavLink 
-              to="/my-gallery" 
-              className={({ isActive }) => 
-                isActive ? 'text-primary font-semibold' : 'hover:text-primary'
-              }
-            >
-              My Gallery
-            </NavLink>
-          </li>
-          <li>
-            <NavLink 
-              to="/my-favorites" 
-              className={({ isActive }) => 
-                isActive ? 'text-primary font-semibold' : 'hover:text-primary'
-              }
-            >
-              Favorites
-            </NavLink>
-          </li>
-        </>
-      )}
+      {/* existing code continues below */}
     </>
   )
 
   return (
-    <nav className="navbar bg-base-100 shadow-lg sticky top-0 z-50 backdrop-blur-lg bg-opacity-90">
-      <div className="container-custom">
-        <div className="navbar-start">
+    <nav className="navbar bg-base-100 shadow-md sticky top-0 z-50 backdrop-blur-lg bg-opacity-95 transition-all duration-300">
+      <div className="container-custom flex items-center justify-between py-2 px-2 lg:px-6">
+        <div className="flex items-center gap-4">
           <div className="dropdown">
-            <button tabIndex={0} className="btn btn-ghost lg:hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button tabIndex={0} className="btn btn-ghost lg:hidden rounded-full transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
               </svg>
             </button>
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-base-100 rounded-xl w-52 transition-all duration-200">
               {navLinks}
             </ul>
           </div>
-          <Link to="/" className="text-2xl font-display font-bold gradient-text">
+          <Link to="/" className="text-2xl font-display font-bold gradient-text tracking-tight select-none">
             ARTIFY
           </Link>
         </div>
 
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 gap-2">
+        <div className="hidden lg:flex items-center">
+          <ul className="menu menu-horizontal px-1 gap-4 text-base font-medium">
             {navLinks}
           </ul>
         </div>
 
-        <div className="navbar-end gap-2">
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
           {user ? (
             <div className="dropdown dropdown-end">
-              <button tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full">
+              <button tabIndex={0} className="btn btn-ghost btn-circle avatar rounded-full transition-all duration-200">
+                <div className="w-10 h-10 rounded-full overflow-hidden border border-base-300">
                   <img 
                     src={user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.displayName || user.email)} 
                     alt={user.displayName || 'User'} 
+                    className="object-cover w-full h-full"
                   />
                 </div>
               </button>
-              <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                <li className="menu-title">
-                  <span>{user.displayName || 'User'}</span>
+              <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-base-100 rounded-xl w-56 transition-all duration-200">
+                <li className="menu-title pb-1 border-b border-base-200 mb-2">
+                  <span className="font-semibold">{user.displayName || 'User'}</span>
                   <span className="text-xs opacity-60">{user.email}</span>
                 </li>
+                <li><Link to="/add-artwork">Add Artwork</Link></li>
                 <li><Link to="/my-gallery">My Gallery</Link></li>
                 <li><Link to="/my-favorites">Favorites</Link></li>
-                <li><button onClick={handleLogout}>Logout</button></li>
+                <li><button onClick={handleLogout} className="text-error">Logout</button></li>
               </ul>
             </div>
           ) : (
             <div className="flex gap-2">
-              <Link to="/login" className="btn btn-ghost">Login</Link>
-              <Link to="/register" className="btn btn-primary">Register</Link>
+              <Link to="/login" className="btn btn-ghost rounded-full">Login</Link>
+              <Link to="/register" className="btn btn-primary rounded-full">Register</Link>
             </div>
           )}
         </div>
