@@ -28,7 +28,7 @@ const ExploreArtworks = () => {
       if (filters.category) params.category = filters.category
 
       const data = await getPublicArtworks(params)
-      setArtworks(data.artworks || [])
+      setArtworks(data.data || [])
     } catch (error) {
       console.error('Error fetching artworks:', error)
       toast.error('Failed to load artworks')

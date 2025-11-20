@@ -25,7 +25,7 @@ const MyGallery = () => {
     setLoading(true)
     try {
       const data = await getArtworksByUser(user.email)
-      setArtworks(data.artworks || [])
+      setArtworks(data.data || [])
     } catch (error) {
       console.error('Error fetching artworks:', error)
       toast.error('Failed to load your artworks')
