@@ -1,0 +1,41 @@
+# Netlify Configuration for ARTIFY Client
+
+[build]
+  # Build command
+  command = "npm run build"
+  
+  # Directory to publish (Vite builds to 'dist')
+  publish = "dist"
+  
+  # Base directory (if your project is not in root)
+  # base = "artify-client"
+
+[build.environment]
+  # Node version
+  NODE_VERSION = "18"
+
+# Redirects for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for security and caching
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Custom error page (optional)
+# [[redirects]]
+#   from = "/404"
+#   to = "/404.html"
+#   status = 404
