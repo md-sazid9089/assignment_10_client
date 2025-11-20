@@ -40,7 +40,8 @@ const Navbar = () => {
   )
 
   return (
-    <header className="w-full sticky top-0 z-40 flex justify-center bg-transparent">
+    <header className="fixed top-0 left-0 w-full z-50 bg-black">
+      <div className="w-full flex justify-center">
       <div className="mt-4 mb-2 flex items-center justify-between gap-6 px-6 py-3 rounded-full bg-white/80 backdrop-blur shadow-lg max-w-5xl w-full dark:bg-[#0B0B12]/80 transition-all duration-300 border border-base-200/40">
         {/* Left: Brand Logo */}
         <div className="flex items-center gap-4 min-w-[120px]">
@@ -58,7 +59,7 @@ const Navbar = () => {
 
         {/* Right: Theme Toggle + Profile */}
         <div className="flex items-center gap-3 min-w-[120px] justify-end">
-          <ThemeToggle />
+          {/* ThemeToggle removed as requested */}
           {user ? (
             <div className="dropdown dropdown-end">
               <button tabIndex={0} className="btn btn-ghost btn-circle avatar rounded-full transition-all duration-200">
@@ -102,6 +103,7 @@ const Navbar = () => {
             </ul>
           </div>
         </div>
+      </div>
       </div>
     </header>
   )

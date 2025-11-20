@@ -11,8 +11,6 @@ const Home = () => {
   const [featuredArtworks, setFeaturedArtworks] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
-
-  // Banner slides data
   const bannerSlides = [
     {
       id: 1,
@@ -40,7 +38,6 @@ const Home = () => {
     }
   ]
 
-  // Top artists data (mock - can be replaced with API call)
   const topArtists = [
     { id: 1, name: 'Zainul Abedin', artworks: 40, likes: 2200, avatar: 'https://ui-avatars.com/api/?name=Zainul+Abedin&background=6366f1&color=fff' },
     { id: 2, name: 'Quamrul Hassan', artworks: 35, likes: 1980, avatar: 'https://ui-avatars.com/api/?name=Quamrul+Hassan&background=8b5cf6&color=fff' },
@@ -52,7 +49,6 @@ const Home = () => {
     fetchFeaturedArtworks()
   }, [])
 
-  // Auto-advance banner slides
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % bannerSlides.length)
@@ -96,85 +92,78 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Banner/Slider Section */}
-      <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
-        {/* Slides */}
-        {bannerSlides.map((slide, index) => (
-          <div
-            key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            {/* Background Image */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${slide.image})` }}
+    <div className="min-h-screen bg-black">
+      <section className="w-full h-screen bg-black relative overflow-hidden">
+        <div className="h-full pt-24">
+          {bannerSlides.map((slide, index) => (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
-            </div>
-
-            {/* Content */}
-            <div className="relative z-10 h-full flex items-center">
-              <div className="container mx-auto px-4">
-                {index === currentSlide && (
-                  <Fade cascade damping={0.2}>
-                    <div className="max-w-3xl text-white">
-                      <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
-                        {index === 0 ? (
-                          // Add typewriter effect to the first slide
-                          <span>
-                            Discover Amazing{' '}
-                            <span className="text-primary">
-                              <Typewriter
-                                words={['Artworks', 'Paintings', 'Illustrations', 'Photographs', 'Sculptures']}
-                                loop={0}
-                                cursor
-                                cursorStyle='|'
-                                typeSpeed={70}
-                                deleteSpeed={50}
-                                delaySpeed={1000}
-                              />
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="h-full w-full object-cover"
+                style={{ position: 'absolute', inset: 0, zIndex: 1 }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30 z-10"></div>
+              <div className="relative z-20 h-full flex items-center">
+                <div className="container mx-auto px-4">
+                  {index === currentSlide && (
+                    <Fade cascade damping={0.2}>
+                      <div className="max-w-3xl text-white">
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
+                          {index === 0 ? (
+                            <span>
+                              Discover Amazing{' '}
+                              <span className="text-primary">
+                                <Typewriter
+                                  words={["Artworks", "Paintings", "Illustrations", "Photographs", "Sculptures"]}
+                                  loop={0}
+                                  cursor
+                                  cursorStyle='|'
+                                  typeSpeed={70}
+                                  deleteSpeed={50}
+                                  delaySpeed={1000}
+                                />
+                              </span>
                             </span>
-                          </span>
-                        ) : (
-                          slide.title
-                        )}
-                      </h1>
-                      <p className="text-xl md:text-2xl mb-8 opacity-90">
-                        {slide.subtitle}
-                      </p>
-                      <Link to={slide.link} className="btn btn-primary btn-lg">
-                        {slide.cta}
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                      </Link>
-                    </div>
-                  </Fade>
-                )}
+                          ) : (
+                            slide.title
+                          )}
+                        </h1>
+                        <p className="text-xl md:text-2xl mb-8 opacity-90">
+                          {slide.subtitle}
+                        </p>
+                        <Link to={slide.link} className="btn btn-primary btn-lg">
+                          {slide.cta}
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                        </Link>
+                      </div>
+                    </Fade>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-
+          ))}
+        </div>
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 btn btn-circle btn-ghost bg-white/20 hover:bg-white/40 text-white backdrop-blur-sm"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 btn btn-circle btn-ghost bg-white/20 hover:bg-white/40 text-white backdrop-blur-sm"
         >
           ❮
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 btn btn-circle btn-ghost bg-white/20 hover:bg-white/40 text-white backdrop-blur-sm"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 btn btn-circle btn-ghost bg-white/20 hover:bg-white/40 text-white backdrop-blur-sm"
         >
           ❯
         </button>
-
         {/* Slide Indicators */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3">
           {bannerSlides.map((_, index) => (
             <button
               key={index}
@@ -189,7 +178,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Artworks Section */}
       <section className="py-20 bg-base-100">
         <div className="container mx-auto px-4">
           <Fade>
@@ -240,7 +228,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Top Artists of the Week Section */}
       <section className="py-20 bg-base-200">
         <div className="container mx-auto px-4">
           <Fade>
@@ -255,7 +242,6 @@ const Home = () => {
               {topArtists.map((artist, index) => (
                 <div key={artist.id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
                   <div className="card-body items-center text-center">
-                    {/* Rank Badge */}
                     <div className="absolute top-4 right-4">
                       <div className={`badge ${
                         index === 0 ? 'badge-warning' : 
@@ -266,18 +252,12 @@ const Home = () => {
                         #{index + 1}
                       </div>
                     </div>
-
-                    {/* Avatar */}
                     <div className="avatar">
                       <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                         <img src={artist.avatar} alt={artist.name} />
                       </div>
                     </div>
-
-                    {/* Artist Info */}
                     <h3 className="card-title text-xl mt-4">{artist.name}</h3>
-                    
-                    {/* Stats */}
                     <div className="flex gap-4 mt-2 text-sm">
                       <div className="text-center">
                         <div className="font-bold text-primary text-lg">{artist.artworks}</div>
@@ -289,8 +269,6 @@ const Home = () => {
                         <div className="text-base-content/70">Likes</div>
                       </div>
                     </div>
-
-                    {/* View Profile Button */}
                     <button className="btn btn-primary btn-sm mt-4 w-full">
                       View Profile
                     </button>
@@ -302,7 +280,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Community Highlights Section */}
       <section className="py-20 bg-base-100">
         <div className="container mx-auto px-4">
           <Fade>
@@ -313,7 +290,6 @@ const Home = () => {
           </Fade>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Stat Card 1 */}
             <Zoom delay={100}>
               <div className="card bg-gradient-to-br from-primary to-primary/70 text-white shadow-xl">
                 <div className="card-body items-center text-center">
@@ -326,8 +302,6 @@ const Home = () => {
                 </div>
               </div>
             </Zoom>
-
-            {/* Stat Card 2 */}
             <Zoom delay={200}>
               <div className="card bg-gradient-to-br from-secondary to-secondary/70 text-white shadow-xl">
                 <div className="card-body items-center text-center">
@@ -340,8 +314,6 @@ const Home = () => {
                 </div>
               </div>
             </Zoom>
-
-            {/* Stat Card 3 */}
             <Zoom delay={300}>
               <div className="card bg-gradient-to-br from-accent to-accent/70 text-white shadow-xl">
                 <div className="card-body items-center text-center">
@@ -356,7 +328,6 @@ const Home = () => {
             </Zoom>
           </div>
 
-          {/* Featured Categories */}
           <Fade delay={400}>
             <div className="mt-16">
               <h3 className="text-3xl font-bold text-center mb-8">Popular Categories</h3>
@@ -376,7 +347,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-primary to-secondary">
         <div className="container mx-auto px-4">
           <Fade>

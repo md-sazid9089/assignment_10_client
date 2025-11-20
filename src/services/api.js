@@ -61,7 +61,7 @@ export const getFeaturedArtworks = async () => {
  * @param {Object} params - { search, category }
  */
 export const getPublicArtworks = async (params = {}) => {
-  const response = await api.get('/artworks/public', { params })
+  const response = await api.get('/api/artworks/public', { params })
   return response.data
 }
 
