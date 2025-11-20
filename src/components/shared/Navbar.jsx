@@ -40,31 +40,24 @@ const Navbar = () => {
   )
 
   return (
-    <nav className="navbar bg-base-100 shadow-md sticky top-0 z-50 backdrop-blur-lg bg-opacity-95 transition-all duration-300">
-      <div className="container-custom flex items-center justify-between py-2 px-2 lg:px-6">
-        <div className="flex items-center gap-4">
-          <div className="dropdown">
-            <button tabIndex={0} className="btn btn-ghost lg:hidden rounded-full transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
-              </svg>
-            </button>
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-base-100 rounded-xl w-52 transition-all duration-200">
-              {navLinks}
-            </ul>
-          </div>
-          <Link to="/" className="text-2xl font-display font-bold gradient-text tracking-tight select-none">
+    <header className="w-full sticky top-0 z-40 flex justify-center bg-transparent">
+      <div className="mt-4 mb-2 flex items-center justify-between gap-6 px-6 py-3 rounded-full bg-white/80 backdrop-blur shadow-lg max-w-5xl w-full dark:bg-[#0B0B12]/80 transition-all duration-300 border border-base-200/40">
+        {/* Left: Brand Logo */}
+        <div className="flex items-center gap-4 min-w-[120px]">
+          <Link to="/" className="text-2xl font-display font-bold gradient-text tracking-tight select-none drop-shadow-sm">
             ARTIFY
           </Link>
         </div>
 
-        <div className="hidden lg:flex items-center">
-          <ul className="menu menu-horizontal px-1 gap-4 text-base font-medium">
+        {/* Center: Main Links */}
+        <div className="hidden lg:flex items-center justify-center flex-1">
+          <ul className="flex gap-6 text-base font-semibold">
             {navLinks}
           </ul>
         </div>
 
-        <div className="flex items-center gap-3">
+        {/* Right: Theme Toggle + Profile */}
+        <div className="flex items-center gap-3 min-w-[120px] justify-end">
           <ThemeToggle />
           {user ? (
             <div className="dropdown dropdown-end">
@@ -77,7 +70,7 @@ const Navbar = () => {
                   />
                 </div>
               </button>
-              <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-base-100 rounded-xl w-56 transition-all duration-200">
+              <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-white/90 dark:bg-[#181826] rounded-xl w-56 transition-all duration-200 border border-base-200/40">
                 <li className="menu-title pb-1 border-b border-base-200 mb-2">
                   <span className="font-semibold">{user.displayName || 'User'}</span>
                   <span className="text-xs opacity-60">{user.email}</span>
@@ -95,8 +88,22 @@ const Navbar = () => {
             </div>
           )}
         </div>
+
+        {/* Mobile: Hamburger + Links */}
+        <div className="lg:hidden flex items-center">
+          <div className="dropdown">
+            <button tabIndex={0} className="btn btn-ghost rounded-full transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+              </svg>
+            </button>
+            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-white/90 dark:bg-[#181826] rounded-xl w-52 transition-all duration-200 border border-base-200/40">
+              {navLinks}
+            </ul>
+          </div>
+        </div>
       </div>
-    </nav>
+    </header>
   )
 }
 

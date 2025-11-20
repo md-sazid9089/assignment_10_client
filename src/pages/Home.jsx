@@ -42,10 +42,10 @@ const Home = () => {
 
   // Top artists data (mock - can be replaced with API call)
   const topArtists = [
-    { id: 1, name: 'Emma Wilson', artworks: 24, likes: 1240, avatar: 'https://ui-avatars.com/api/?name=Emma+Wilson&background=6366f1&color=fff' },
-    { id: 2, name: 'Michael Chen', artworks: 18, likes: 980, avatar: 'https://ui-avatars.com/api/?name=Michael+Chen&background=8b5cf6&color=fff' },
-    { id: 3, name: 'Sofia Rodriguez', artworks: 32, likes: 1560, avatar: 'https://ui-avatars.com/api/?name=Sofia+Rodriguez&background=ec4899&color=fff' },
-    { id: 4, name: 'James Anderson', artworks: 21, likes: 890, avatar: 'https://ui-avatars.com/api/?name=James+Anderson&background=10b981&color=fff' }
+    { id: 1, name: 'Zainul Abedin', artworks: 40, likes: 2200, avatar: 'https://ui-avatars.com/api/?name=Zainul+Abedin&background=6366f1&color=fff' },
+    { id: 2, name: 'Quamrul Hassan', artworks: 35, likes: 1980, avatar: 'https://ui-avatars.com/api/?name=Quamrul+Hassan&background=8b5cf6&color=fff' },
+    { id: 3, name: 'Shilpacharya Kamrul', artworks: 28, likes: 1560, avatar: 'https://ui-avatars.com/api/?name=Shilpacharya+Kamrul&background=ec4899&color=fff' },
+    { id: 4, name: 'Safiuddin Ahmed', artworks: 30, likes: 1890, avatar: 'https://ui-avatars.com/api/?name=Safiuddin+Ahmed&background=10b981&color=fff' }
   ]
 
   useEffect(() => {
