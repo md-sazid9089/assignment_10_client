@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Fade } from 'react-awesome-reveal'
+import { Fade, Zoom } from 'react-awesome-reveal'
 import { getPublicArtworks } from '../services/api'
 import ArtworkCard from '../components/ArtworkCard'
 import FilterBar from '../components/FilterBar'
