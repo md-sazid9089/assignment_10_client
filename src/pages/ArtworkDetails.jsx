@@ -1,31 +1,24 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
-import { Fade, Zoom } from 'react-awesome-reveal'
-import { useAuth } from '../hooks/useAuth'
-import PageLoader from '../components/PageLoader'
-import { 
-  getArtworkById, 
-  toggleLike, 
-  toggleFavorite, 
-  getArtworksByUser,
-  checkLikeStatus,
-  checkFavoriteStatus
-} from '../services/api'
-import toast from 'react-hot-toast'
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Fade, Zoom } from 'react-awesome-reveal';
+import { useAuth } from '../hooks/useAuth';
+import PageLoader from '../components/PageLoader';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ArtworkDetails = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { user } = useAuth()
   
-  const [artwork, setArtwork] = useState(null)
-  const [artistArtworks, setArtistArtworks] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [isLiked, setIsLiked] = useState(false)
-  const [isFavorited, setIsFavorited] = useState(false)
-  const [likesCount, setLikesCount] = useState(0)
-  const [isLiking, setIsLiking] = useState(false)
-  const [isFavoriting, setIsFavoriting] = useState(false)
+  const [artwork, setArtwork] = useState(null);
+  const [artistArtworks, setArtistArtworks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
+  const [isLiking, setIsLiking] = useState(false);
+  const [isFavoriting, setIsFavoriting] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -40,24 +33,31 @@ const ArtworkDetails = () => {
   }, [artwork, user])
 
   const fetchArtworkDetails = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const data = await getArtworkById(id)
-      setArtwork(data.artwork)
-      setLikesCount(data.artwork.likesCount || 0)
-      
-      // Fetch other artworks by the same artist
-      if (data.artwork.userEmail) {
-        fetchArtistArtworks(data.artwork.userEmail)
+      // Build correct backend URL
+      let baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      // Ensure /api/artworks/:id is used
+      if (!baseURL.endsWith('/api')) baseURL += '/api';
+      const url = `${baseURL}/artworks/${id}`;
+      const response = await axios.get(url);
+      // Support both { artwork } and direct artwork object
+      const art = response.data.artwork || response.data.data || response.data;
+      setArtwork(art);
+      setLikesCount(art && typeof art.likesCount === 'number' ? art.likesCount : 0);
+
+      // Fetch other artworks by the same artist (optional, can keep existing logic)
+      if (art && art.userEmail) {
+        // ...existing code...
       }
     } catch (error) {
-      console.error('Error fetching artwork:', error)
-      toast.error('Failed to load artwork details')
-      navigate('/explore')
+      console.error('Error fetching artwork:', error);
+      toast.error('Failed to load artwork details');
+      setArtwork(null);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const fetchArtistArtworks = async (userEmail) => {
     try {
@@ -157,7 +157,7 @@ const ArtworkDetails = () => {
   }
 
   if (loading) {
-    return <PageLoader message="Loading artwork details..." />
+    return <PageLoader message="Loading artwork details..." />;
   }
 
   if (!artwork) {
@@ -169,15 +169,25 @@ const ArtworkDetails = () => {
           Browse Artworks
         </Link>
       </div>
-    )
+    );
   }
 
+  // Only render details if artwork is loaded
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen py-12 bg-black">
+      {/* Motivational Art Speech */}
+      <div className="max-w-3xl mx-auto mb-10 text-center px-4">
+        <Fade>
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Art is the journey of a free soul.</h2>
+          <p className="text-lg md:text-xl text-white font-medium">
+            Every brushstroke, every color, every idea is a celebration of creativity. Art inspires us to see the world differently, to dream beyond boundaries, and to express what words cannot. Let this artwork ignite your imagination and remind you: your vision matters, your story is unique, and your creativity can change the world.
+          </p>
+        </Fade>
+      </div>
       <div className="container mx-auto px-4">
         {/* Back Button */}
         <Fade>
-          <button 
+          <button
             onClick={() => navigate(-1)} 
             className="btn btn-ghost mb-6"
           >
@@ -261,7 +271,7 @@ const ArtworkDetails = () => {
             <div className="space-y-6">
               {/* Title */}
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold gradient-text mb-2">
+                <h1 className="text-4xl md:text-5xl font-bold gradient-text mb-2 mt-16">
                   {artwork.title}
                 </h1>
                 {artwork.price && (

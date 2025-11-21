@@ -47,7 +47,7 @@ const UpdateProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-transparent">
+    <div className="min-h-screen flex items-center justify-center bg-black">
       <div className="bg-slate-900/80 backdrop-blur-md rounded-xl shadow-lg p-8 w-full max-w-md text-slate-100">
         <h2 className="text-2xl font-bold mb-6 text-center">Update Profile</h2>
         <form onSubmit={handleSubmit} className="space-y-4">

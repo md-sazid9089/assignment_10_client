@@ -24,8 +24,10 @@ const Navbar = () => {
       <li>
         <NavLink 
           to="/"
-          className={({ isActive }) => 
-            isActive ? 'text-primary font-semibold' : 'hover:text-primary'
+          className={({ isActive }) =>
+            isActive
+              ? 'font-semibold text-white'
+              : 'text-white hover:text-white/80'
           }
         >
           Home
@@ -35,7 +37,7 @@ const Navbar = () => {
         <NavLink 
           to="/explore" 
           className={({ isActive }) => 
-            isActive ? 'text-primary font-semibold' : 'hover:text-primary'
+            isActive ? 'font-semibold text-white' : 'text-white hover:text-white/80'
           }
         >
           Explore

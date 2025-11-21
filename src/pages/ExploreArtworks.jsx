@@ -60,6 +60,9 @@ const ExploreArtworks = () => {
         trigger: '#explore-grid',
         start: 'top 80%',
       },
+      onComplete: () => {
+        gsap.set(cardsRef.current, { opacity: 1 });
+      }
     });
   }, [artworks]);
 
@@ -67,8 +70,10 @@ const ExploreArtworks = () => {
     setLoading(true);
     try {
       const params = {};
-      if (filters.search) params.search = filters.search;
-      if (filters.category) params.category = filters.category;
+      if (searchTerm) params.search = searchTerm;
+      if (selectedCategory && selectedCategory !== "All") {
+        params.category = selectedCategory;
+      }
 
       const data = await getPublicArtworks(params);
       let artworks = data.data || [];
@@ -95,15 +100,29 @@ const ExploreArtworks = () => {
     setSearchParams(params)
   }
 
-  const handleLikeUpdate = (artworkId, isLiked, newLikesCount) => {
+  const handleLike = (artworkId) => {
+    // Example: increment likes locally, or call API
     setArtworks(prevArtworks =>
       prevArtworks.map(artwork =>
         artwork._id === artworkId
-          ? { ...artwork, likesCount: newLikesCount, likedBy: isLiked ? [...(artwork.likedBy || []), 'current-user'] : (artwork.likedBy || []).filter(email => email !== 'current-user') }
+          ? { ...artwork, likesCount: (artwork.likesCount || 0) + 1 }
           : artwork
       )
-    )
-  }
+    );
+    // TODO: Call backend API for like if needed
+  };
+
+  const handleFavorite = (artworkId) => {
+    // Example: toggle favorite locally, or call API
+    setArtworks(prevArtworks =>
+      prevArtworks.map(artwork =>
+        artwork._id === artworkId
+          ? { ...artwork, isFavorited: !artwork.isFavorited }
+          : artwork
+      )
+    );
+    // TODO: Call backend API for favorite if needed
+  };
 
   return (
     <section className="min-h-screen bg-[#050818] text-slate-50 pt-32 pb-16">
@@ -170,12 +189,9 @@ const ExploreArtworks = () => {
               <ArtworkCard
                 key={art._id}
                 artwork={art}
+                onLike={handleLike}
+                onFavorite={handleFavorite}
                 ref={(el) => (cardsRef.current[index] = el)}
-                onLikeUpdate={handleLikeUpdate}
-                onViewDetails={(artwork) => {
-                  setSelectedArtwork(artwork);
-                  setIsDetailsOpen(true);
-                }}
               />
             ))}
           </div>

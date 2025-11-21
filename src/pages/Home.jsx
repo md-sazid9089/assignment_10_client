@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import ArtistCard from '../components/ArtistCard'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { Fade, Slide, Zoom } from 'react-awesome-reveal'
@@ -42,10 +43,10 @@ const Home = () => {
   ]
 
   const topArtists = [
-    { id: 1, name: 'Zainul Abedin', artworks: 40, likes: 2200, avatar: 'https://ui-avatars.com/api/?name=Zainul+Abedin&background=6366f1&color=fff' },
-    { id: 2, name: 'Quamrul Hassan', artworks: 35, likes: 1980, avatar: 'https://ui-avatars.com/api/?name=Quamrul+Hassan&background=8b5cf6&color=fff' },
-    { id: 3, name: 'Shilpacharya Kamrul', artworks: 28, likes: 1560, avatar: 'https://ui-avatars.com/api/?name=Shilpacharya+Kamrul&background=ec4899&color=fff' },
-    { id: 4, name: 'Safiuddin Ahmed', artworks: 30, likes: 1890, avatar: 'https://ui-avatars.com/api/?name=Safiuddin+Ahmed&background=10b981&color=fff' }
+    { id: 1, name: 'Zainul Abedin', initials: 'ZA', totalArtworks: 40, totalLikes: 2200, avatarUrl: 'https://ui-avatars.com/api/?name=Zainul+Abedin&background=6366f1&color=fff' },
+    { id: 2, name: 'Quamrul Hassan', initials: 'QH', totalArtworks: 35, totalLikes: 1980, avatarUrl: 'https://ui-avatars.com/api/?name=Quamrul+Hassan&background=8b5cf6&color=fff' },
+    { id: 3, name: 'Shilpacharya Kamrul', initials: 'SK', totalArtworks: 28, totalLikes: 1560, avatarUrl: 'https://ui-avatars.com/api/?name=Shilpacharya+Kamrul&background=ec4899&color=fff' },
+    { id: 4, name: 'Safiuddin Ahmed', initials: 'SA', totalArtworks: 30, totalLikes: 1890, avatarUrl: 'https://ui-avatars.com/api/?name=Safiuddin+Ahmed&background=10b981&color=fff' }
   ]
 
   useEffect(() => {
@@ -246,42 +247,17 @@ const Home = () => {
           </Fade>
 
           <Slide direction="up" cascade damping={0.1}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {topArtists.map((artist, index) => (
-                <div key={artist.id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
-                  <div className="card-body items-center text-center">
-                    <div className="absolute top-4 right-4">
-                      <div className={`badge ${
-                        index === 0 ? 'badge-warning' : 
-                        index === 1 ? 'badge-info' : 
-                        index === 2 ? 'badge-accent' : 
-                        'badge-ghost'
-                      } badge-lg font-bold`}>
-                        #{index + 1}
-                      </div>
-                    </div>
-                    <div className="avatar">
-                      <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                        <img src={artist.avatar} alt={artist.name} />
-                      </div>
-                    </div>
-                    <h3 className="card-title text-xl mt-4 text-slate-100">{artist.name}</h3>
-                    <div className="flex gap-4 mt-2 text-sm">
-                      <div className="text-center">
-                        <div className="font-bold text-primary text-lg">{artist.artworks}</div>
-                        <div className="text-slate-400">Artworks</div>
-                      </div>
-                      <div className="divider divider-horizontal"></div>
-                      <div className="text-center">
-                        <div className="font-bold text-error text-lg">{artist.likes}</div>
-                        <div className="text-slate-400">Likes</div>
-                      </div>
-                    </div>
-                    <button className="btn btn-primary btn-sm mt-4 w-full">
-                      View Profile
-                    </button>
-                  </div>
-                </div>
+                <ArtistCard
+                  key={artist.id || index}
+                  rank={index + 1}
+                  name={artist.name}
+                  initials={artist.initials}
+                  avatarUrl={artist.avatarUrl}
+                  totalArtworks={artist.totalArtworks}
+                  totalLikes={artist.totalLikes}
+                />
               ))}
             </div>
           </Slide>

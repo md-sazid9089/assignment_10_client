@@ -1,115 +1,130 @@
 
 
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useState, useRef, useEffect } from 'react';
-import { toggleLike, toggleFavorite } from '../services/api';
-import toast from 'react-hot-toast';
+import { useState, useRef, useEffect, forwardRef } from 'react';
+import gsap from 'gsap';
 
-const ArtworkCard = ({ artwork, onLikeUpdate, onFavoriteUpdate, onViewDetails, showActions = true }) => {
-  const { user } = useAuth();
-  const [isLiked, setIsLiked] = useState(artwork.likedBy?.includes(user?.email) || false);
-  const [likesCount, setLikesCount] = useState(artwork.likesCount || 0);
-  const [isFavorited, setIsFavorited] = useState(artwork.isFavorited || false);
-  const [isLiking, setIsLiking] = useState(false);
-  const [isFavoriting, setIsFavoriting] = useState(false);
+/**
+ * @typedef {Object} ArtCardProps
+ * @property {Object} artwork
+ * @property {(id: string) => void} [onLike]
+ * @property {(id: string) => void} [onFavorite]
+ * @property {(artwork: Object) => void} [onEdit]
+ * @property {(id: string) => void} [onDelete]
+ * @property {boolean} [showOwnerControls]
+ */
 
-  // Like button handler
-  const handleLike = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!user) {
-      toast.error('Please login to like artworks');
-      return;
-    }
-    if (isLiking) return;
-    setIsLiking(true);
-    try {
-      const response = await toggleLike(artwork._id);
-      setIsLiked(response.isLiked);
-      setLikesCount(response.likesCount);
-      if (onLikeUpdate) {
-        onLikeUpdate(artwork._id, response.isLiked, response.likesCount);
-      }
-    } catch (error) {
-      console.error('Error toggling like:', error);
-      toast.error('Failed to update like');
-    } finally {
-      setIsLiking(false);
-    }
+const ArtworkCard = forwardRef(({ artwork, onLike, onFavorite, onEdit, onDelete, showOwnerControls = false }, ref) => {
+  const [imageSrc, setImageSrc] = useState(artwork.imageUrl || artwork.image || "/fallback-art.png");
+  const handleImageError = () => {
+    setImageSrc("/fallback-art.png");
   };
 
-  // Favourite button handler
-  const handleFavorite = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!user) {
-      toast.error('Please login to favorite artworks');
-      return;
+  // Helper to check valid MongoDB ObjectId (24 hex chars)
+  const isValidObjectId = typeof artwork._id === 'string' && /^[a-fA-F0-9]{24}$/.test(artwork._id);
+
+  const cardRef = ref || useRef(null);
+
+  useEffect(() => {
+    if (cardRef.current) {
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.1 }
+      );
     }
-    if (isFavoriting) return;
-    setIsFavoriting(true);
-    try {
-      const response = await toggleFavorite({ artworkId: artwork._id });
-      setIsFavorited(response.isFavorited);
-      const message = response.isFavorited ? 'Added to favorites' : 'Removed from favorites';
-      toast.success(message);
-      if (onFavoriteUpdate) {
-        onFavoriteUpdate(artwork._id, response.isFavorited);
-      }
-    } catch (error) {
-      console.error('Error toggling favorite:', error);
-      toast.error('Failed to update favorite');
-    } finally {
-      setIsFavoriting(false);
-    }
-  };
+  }, []);
+
+  // Hover effect
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const onEnter = () => {
+      gsap.to(el, { scale: 1.04, boxShadow: '0 8px 32px 0 rgba(80,80,160,0.18)', duration: 0.25, ease: 'power2.out' });
+    };
+    const onLeave = () => {
+      gsap.to(el, { scale: 1, boxShadow: '0 4px 16px 0 rgba(80,80,160,0.10)', duration: 0.25, ease: 'power2.inOut' });
+    };
+    el.addEventListener('mouseenter', onEnter);
+    el.addEventListener('mouseleave', onLeave);
+    return () => {
+      el.removeEventListener('mouseenter', onEnter);
+      el.removeEventListener('mouseleave', onLeave);
+    };
+  }, []);
 
   return (
-    <div className="bg-white rounded-3xl shadow-md overflow-hidden flex flex-col min-h-[340px] w-full">
+    <div ref={cardRef} className="rounded-3xl bg-white/5 border border-white/10 shadow-xl backdrop-blur-lg flex flex-col overflow-hidden min-h-[340px] w-full">
       {/* Artwork Image */}
       <img
-        src={artwork.image}
+        src={imageSrc}
         alt={artwork.title}
         className="w-full h-48 object-cover"
+        onError={handleImageError}
       />
       {/* Content Section */}
       <div className="flex-1 p-4 flex flex-col">
-        <h3 className="text-lg font-semibold text-slate-900 mb-1 truncate">{artwork.title}</h3>
-        <p className="text-sm text-slate-500 mt-1">By {artwork.artistName}</p>
-        <p className="text-sm text-slate-500">{artwork.category}</p>
+        <h3 className="text-lg font-semibold text-slate-50 mb-1 truncate">{artwork.title}</h3>
+        <p className="text-sm text-slate-300 mt-1">By {artwork.artistName}</p>
+        <p className="text-sm text-slate-300">{artwork.category}</p>
       </div>
       {/* Actions Row */}
-      <div className="flex items-center justify-between gap-3 px-4 pb-4">
-        {/* ❤️ Like Button */}
-        <button
-          onClick={handleLike}
-          disabled={isLiking}
-          className={`btn btn-sm ${isLiked ? 'btn-error' : 'btn-outline btn-error'}`}
-          title={isLiked ? 'Unlike' : 'Like'}
-        >
-          <span role="img" aria-label="love">❤️</span> {likesCount}
-        </button>
-        {/* ⭐ Favourite Button */}
-        <button
-          onClick={handleFavorite}
-          disabled={isFavoriting}
-          className={`btn btn-sm ${isFavorited ? 'btn-secondary' : 'btn-outline btn-secondary'}`}
-          title={isFavorited ? 'Unfavorite' : 'Add to Favorites'}
-        >
-          <span role="img" aria-label="favorite">⭐</span>
-        </button>
-        {/* 👁 View Details Button */}
-        {showActions && (
-          <Link to={`/artworks/${artwork._id}`}>
-            <button className="border border-indigo-500 rounded-xl px-4 py-2 text-sm font-medium text-indigo-600" type="button">
-              View Details
+      <div className="flex flex-col gap-2 px-5 pb-4">
+        <div className="flex items-center justify-between gap-3">
+          {/* ❤️ Like Button */}
+          <button
+            type="button"
+            className="btn btn-sm btn-error"
+            title="Like"
+            onClick={() => onLike && onLike(artwork._id)}
+          >
+            <span role="img" aria-label="love">❤️</span> {artwork.likesCount}
+          </button>
+          {/* ⭐ Favourite Button */}
+          <button
+            type="button"
+            className="btn btn-sm btn-secondary"
+            title="Favorite"
+            onClick={() => onFavorite && onFavorite(artwork._id)}
+          >
+            <span role="img" aria-label="favorite">⭐</span>
+          </button>
+          {/* View Details Button (only for valid ObjectId) */}
+          {isValidObjectId && (
+            <Link to={`/artworks/${artwork._id}`}>
+              <button
+                type="button"
+                className="px-4 py-2 rounded-xl border border-indigo-400 text-indigo-200 text-sm font-medium hover:bg-indigo-500/10 transition-colors"
+                title="View Details"
+              >
+                View Details
+              </button>
+            </Link>
+          )}
+        </div>
+        {/* Owner Controls: Update/Delete */}
+        {showOwnerControls && (
+          <div className="flex justify-between items-center mt-3 gap-3">
+            <button
+              type="button"
+              onClick={() => onEdit && onEdit(artwork)}
+              className="flex-1 px-3 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-500"
+            >
+              Update
             </button>
-          </Link>
+            <button
+              type="button"
+              onClick={() => onDelete && onDelete(artwork._id)}
+              className="flex-1 px-3 py-2 rounded-xl bg-red-600 text-white text-sm font-medium hover:bg-red-500"
+            >
+              Delete
+            </button>
+          </div>
         )}
       </div>
     </div>
   );
-};
+
+});
 
 export default ArtworkCard;

@@ -16,13 +16,18 @@ const MyFavorites = () => {
   // Fetch user's favorited artworks
   const fetchFavorites = async () => {
     if (!user?.email) return;
-    
     try {
       setLoading(true);
-      const data = await getUserFavorites(user.email);
+      // Directly use Axios instance to match backend route
+      const api = (await import('../services/api')).default || (await import('../services/api')).api;
+      const { data } = await api.get(`/api/favorites/${encodeURIComponent(user.email)}`);
       setFavorites(data);
     } catch (error) {
-      console.error('Error fetching favorites:', error);
+      console.error('Error fetching favorites:', {
+        url: `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/favorites/${user?.email}`,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
       toast.error('Failed to load favorites');
     } finally {
       setLoading(false);
@@ -62,13 +67,13 @@ const MyFavorites = () => {
   }
 
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-black">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mt-16">
                 My Favorites
               </h1>
               <p className="text-gray-600 dark:text-gray-400 mt-2">
