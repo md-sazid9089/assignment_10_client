@@ -46,9 +46,9 @@ const Navbar = () => {
   )
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-black">
+    <header className="fixed top-0 left-0 w-full z-50 bg-transparent">
       <div className="w-full flex justify-center">
-      <div className="mt-4 mb-2 flex items-center justify-between gap-6 px-6 py-3 rounded-full bg-white/80 backdrop-blur shadow-lg max-w-5xl w-full dark:bg-[#0B0B12]/80 transition-all duration-300 border border-base-200/40">
+      <div className="mt-4 mb-2 flex items-center justify-between gap-6 px-6 py-3 rounded-full bg-slate-900/70 backdrop-blur shadow-lg max-w-5xl w-full transition-all duration-300 border border-slate-700/40 text-slate-100">
         {/* Left: Brand Logo */}
         <div className="flex items-center gap-4 min-w-[120px]">
           <Link to="/" className="text-2xl font-display font-bold gradient-text tracking-tight select-none drop-shadow-sm">

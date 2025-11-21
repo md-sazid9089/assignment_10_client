@@ -51,7 +51,7 @@ const NotFound = () => {
 
         {/* Creative Message with Art Theme */}
         <Bounce delay={600}>
-          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 mb-8 shadow-xl border-2 border-dashed border-primary/30 max-w-xl mx-auto">
+          <div className="bg-slate-900/80 backdrop-blur-md rounded-2xl p-6 mb-8 shadow-xl border-2 border-dashed border-primary/30 max-w-xl mx-auto text-slate-100">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="text-4xl">🖼️</span>
               <span className="text-2xl font-semibold text-gray-700 dark:text-gray-300">Lost in the Gallery?</span>

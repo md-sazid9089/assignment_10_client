@@ -52,7 +52,7 @@ const UpdateProfileModal = ({ user, onClose, onProfileUpdated }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="bg-white dark:bg-[#181826] rounded-xl shadow-lg p-6 w-full max-w-md relative">
+      <div className="bg-slate-900/80 backdrop-blur-md rounded-xl shadow-lg p-6 w-full max-w-md relative text-slate-100">
         <h2 className="text-xl font-bold mb-4">Update Profile</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

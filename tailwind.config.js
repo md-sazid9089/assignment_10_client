@@ -48,6 +48,10 @@ export default {
           900: '#831843',
         },
       },
+      backgroundImage: {
+        'deep-space': "linear-gradient(135deg, #020617 0%, #031228 40%, #071f3d 80%, #111827 100%)",
+        'starfield': "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 1px, transparent 1px), radial-gradient(circle at 70% 80%, rgba(255,255,255,0.07) 1px, transparent 1px), radial-gradient(circle at 50% 60%, rgba(255,255,255,0.06) 1px, transparent 1px)"
+      },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Poppins', 'system-ui', 'sans-serif'],
@@ -56,9 +60,65 @@ export default {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            color: '#e5e7eb',
+            a: { color: '#ec4899', fontWeight: '500' },
+            h1: {
+              color: '#f9fafb',
+              fontFamily: 'Poppins, system-ui, sans-serif',
+              fontWeight: '700',
+              fontSize: '3rem',
+              lineHeight: '1.1',
+              letterSpacing: '-0.02em',
+              marginBottom: '1rem',
+            },
+            h2: {
+              color: '#f9fafb',
+              fontFamily: 'Poppins, system-ui, sans-serif',
+              fontWeight: '600',
+              fontSize: '2.25rem',
+              lineHeight: '1.15',
+              marginBottom: '0.75rem',
+            },
+            h3: {
+              color: '#f9fafb',
+              fontFamily: 'Poppins, system-ui, sans-serif',
+              fontWeight: '600',
+              fontSize: '1.75rem',
+              lineHeight: '1.2',
+              marginBottom: '0.5rem',
+            },
+            h4: {
+              color: '#f9fafb',
+              fontFamily: 'Poppins, system-ui, sans-serif',
+              fontWeight: '500',
+              fontSize: '1.25rem',
+              lineHeight: '1.25',
+              marginBottom: '0.5rem',
+            },
+            p: {
+              color: '#e5e7eb',
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: '1.125rem',
+              lineHeight: '1.7',
+              marginBottom: '1rem',
+            },
+            strong: { color: '#f9fafb' },
+            em: { color: '#e5e7eb' },
+            blockquote: { color: '#9ca3af' },
+            ul: { color: '#e5e7eb' },
+            ol: { color: '#e5e7eb' },
+            li: { color: '#e5e7eb' },
+            small: { color: '#9ca3af' },
+            span: { color: '#e5e7eb' },
+          },
+        },
+      },
     },
   },
-  plugins: [require('daisyui')],
+  plugins: [require('@tailwindcss/typography'), require('daisyui')],
   daisyui: {
     themes: [
       {
