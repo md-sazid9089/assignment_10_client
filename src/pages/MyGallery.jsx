@@ -15,11 +15,13 @@ const MyGallery = () => {
   const [selectedArtwork, setSelectedArtwork] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  // Add reload trigger for refetch after upload
+  const [reloadGallery, setReloadGallery] = useState(false);
   useEffect(() => {
     if (user?.email) {
-      fetchUserArtworks()
+      fetchUserArtworks();
     }
-  }, [user])
+  }, [user?.email, reloadGallery]);
 
   const fetchUserArtworks = async () => {
     setLoading(true)
@@ -80,15 +82,11 @@ const MyGallery = () => {
   }
 
   const handleUpdateSuccess = (updatedArtwork) => {
-    // Update artwork in state
-    setArtworks(prevArtworks =>
-      prevArtworks.map(art =>
-        art._id === updatedArtwork._id ? updatedArtwork : art
-      )
-    )
-    setIsModalOpen(false)
-    toast.success('Artwork updated successfully!')
-  }
+    setIsModalOpen(false);
+    setSelectedArtwork(null);
+    setReloadGallery(r => !r); // Refetch gallery
+    toast.success('Artwork updated successfully!');
+  };
 
   if (loading) {
     return <PageLoader message="Loading your gallery..." />

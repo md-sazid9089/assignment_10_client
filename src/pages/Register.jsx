@@ -5,23 +5,28 @@ import { useAuth } from '../hooks/useAuth'
 const Register = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [photoURL, setPhotoURL] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const { createUser, signInWithGoogle } = useAuth()
   const navigate = useNavigate()
 
   const handleRegister = async (e) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
     try {
-      await createUser(email, password, name)
-      navigate('/')
+      const result = await createUser(email, password, name);
+      // Optionally update photoURL
+      if (photoURL && result.user) {
+        await result.user.updateProfile({ photoURL });
+      }
+      navigate('/');
     } catch (error) {
-      console.error('Registration error:', error)
+      console.error('Registration error:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleGoogleSignup = async () => {
     setLoading(true)
@@ -65,6 +70,17 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold mb-2">Photo URL</label>
+            <input
+              type="url"
+              placeholder="https://your-photo-url.com"
+              className="input-field"
+              value={photoURL}
+              onChange={(e) => setPhotoURL(e.target.value)}
             />
           </div>
 

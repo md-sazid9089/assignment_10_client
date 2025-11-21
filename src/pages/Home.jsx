@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Fade, Slide, Zoom } from 'react-awesome-reveal'
 import { Typewriter } from 'react-simple-typewriter'
 import { getFeaturedArtworks } from '../services/api'
+import { DUMMY_FEATURED_ARTWORKS } from '../data/dummyFeaturedArtworks'
 import ArtworkCard from '../components/ArtworkCard'
 import Loader from '../components/Loader'
 import toast from 'react-hot-toast'
@@ -59,15 +60,20 @@ const Home = () => {
 
   const fetchFeaturedArtworks = async () => {
     try {
-      const data = await getFeaturedArtworks()
-      setFeaturedArtworks(data.artworks || [])
+      const data = await getFeaturedArtworks();
+      let artworks = data.artworks || [];
+      if (!artworks.length) {
+        artworks = DUMMY_FEATURED_ARTWORKS;
+      }
+      setFeaturedArtworks(artworks);
     } catch (error) {
-      console.error('Error fetching featured artworks:', error)
-      toast.error('Failed to load featured artworks')
+      setFeaturedArtworks(DUMMY_FEATURED_ARTWORKS);
+      console.error('Error fetching featured artworks:', error);
+      toast.error('Failed to load featured artworks');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleLikeUpdate = (artworkId, isLiked, newLikesCount) => {
     setFeaturedArtworks(prevArtworks =>

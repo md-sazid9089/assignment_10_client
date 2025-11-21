@@ -1,0 +1,45 @@
+// Dummy featured artworks for fallback
+export const DUMMY_FEATURED_ARTWORKS = [
+  {
+    _id: "demo1",
+    imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+    title: "Sunset Overdrive",
+    category: "Painting",
+    medium: "Oil on Canvas",
+    description: "A vibrant sunset landscape with bold brush strokes.",
+    dimensions: "24x36 inches",
+    price: 350,
+    visibility: "Public",
+    userName: "DemoArtist",
+    userEmail: "demo@artify.com",
+    likesCount: 12
+  },
+  {
+    _id: "demo2",
+    imageUrl: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
+    title: "Digital Dreams",
+    category: "Digital Art",
+    medium: "Procreate",
+    description: "A surreal digital composition blending nature and technology.",
+    dimensions: "1920x1080 px",
+    price: 120,
+    visibility: "Public",
+    userName: "DemoArtist",
+    userEmail: "demo@artify.com",
+    likesCount: 8
+  },
+  {
+    _id: "demo3",
+    imageUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+    title: "Stone Serenity",
+    category: "Sculpture",
+    medium: "Marble",
+    description: "A minimalist marble sculpture evoking calm and balance.",
+    dimensions: "12x8x6 inches",
+    price: 500,
+    visibility: "Public",
+    userName: "DemoArtist",
+    userEmail: "demo@artify.com",
+    likesCount: 5
+  }
+];
