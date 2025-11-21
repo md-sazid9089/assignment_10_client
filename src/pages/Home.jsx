@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { useAuth } from '../hooks/useAuth'
 import { Fade, Slide, Zoom } from 'react-awesome-reveal'
 import { Typewriter } from 'react-simple-typewriter'
 import { getFeaturedArtworks } from '../services/api'
@@ -9,6 +10,7 @@ import Loader from '../components/Loader'
 import toast from 'react-hot-toast'
 
 const Home = () => {
+  const { user } = useAuth();
   const [featuredArtworks, setFeaturedArtworks] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -353,19 +355,21 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-br from-primary to-secondary">
-        <div className="container mx-auto px-4">
-          <Fade>
-            <div className="text-center text-white space-y-6 max-w-3xl mx-auto">
-              <h2 className="text-4xl font-bold">Ready to Share Your Creativity?</h2>
-              <p className="text-xl opacity-90">Join thousands of artists showcasing their work on ARTIFY</p>
-              <Link to="/register" className="btn btn-accent btn-lg">
-                Get Started Free
-              </Link>
-            </div>
-          </Fade>
-        </div>
-      </section>
+      {!user && (
+        <section className="py-20 bg-gradient-to-br from-primary to-secondary">
+          <div className="container mx-auto px-4">
+            <Fade>
+              <div className="text-center text-white space-y-6 max-w-3xl mx-auto">
+                <h2 className="text-4xl font-bold">Ready to Share Your Creativity?</h2>
+                <p className="text-xl opacity-90">Join thousands of artists showcasing their work on ARTIFY</p>
+                <Link to="/register" className="btn btn-accent btn-lg">
+                  Get Started Free
+                </Link>
+              </div>
+            </Fade>
+          </div>
+        </section>
+      )}
     </div>
   )
 }

@@ -9,6 +9,7 @@ import ArtworkDetails from './pages/ArtworkDetails'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import NotFound from './pages/NotFound'
+import UpdateProfilePage from './pages/UpdateProfile'
 import ThemeAnimationDemo from './pages/ThemeAnimationDemo'
 import PrivateRoute from './components/PrivateRoute'
 
@@ -37,6 +38,11 @@ function App() {
         <Route path="my-favorites" element={
           <PrivateRoute>
             <MyFavorites />
+          </PrivateRoute>
+        } />
+        <Route path="update-profile" element={
+          <PrivateRoute>
+            <UpdateProfilePage />
           </PrivateRoute>
         } />
         <Route path="artworks/:id" element={

@@ -1,9 +1,15 @@
-import { Link, NavLink } from 'react-router-dom'
-import { useAuth } from '../../hooks/useAuth'
-import ThemeToggle from './ThemeToggle'
+import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
+import { useState } from 'react';
+import UpdateProfileModal from '../UpdateProfileModal';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
-  const { user, logOut } = useAuth()
+  const { user, logOut } = useAuth();
+  const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
+  function handleProfileUpdated(updatedUser) {
+    // Update user in context or state as needed
+  }
 
   const handleLogout = async () => {
     try {
@@ -17,7 +23,7 @@ const Navbar = () => {
     <>
       <li>
         <NavLink 
-          to="/" 
+          to="/"
           className={({ isActive }) => 
             isActive ? 'text-primary font-semibold' : 'hover:text-primary'
           }
@@ -61,27 +67,32 @@ const Navbar = () => {
         <div className="flex items-center gap-3 min-w-[120px] justify-end">
           {/* ThemeToggle removed as requested */}
           {user ? (
-            <div className="dropdown dropdown-end">
-              <button tabIndex={0} className="btn btn-ghost btn-circle avatar rounded-full transition-all duration-200">
-                <div className="w-10 h-10 rounded-full overflow-hidden border border-base-300">
-                  <img 
-                    src={user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.displayName || user.email)} 
-                    alt={user.displayName || 'User'} 
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-              </button>
-              <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-white/90 dark:bg-[#181826] rounded-xl w-56 transition-all duration-200 border border-base-200/40">
-                <li className="menu-title pb-1 border-b border-base-200 mb-2">
-                  <span className="font-semibold">{user.displayName || 'User'}</span>
-                  <span className="text-xs opacity-60">{user.email}</span>
-                </li>
-                <li><Link to="/add-artwork">Add Artwork</Link></li>
-                <li><Link to="/my-gallery">My Gallery</Link></li>
-                <li><Link to="/my-favorites">Favorites</Link></li>
-                <li><button onClick={handleLogout} className="text-error">Logout</button></li>
-              </ul>
-            </div>
+            <>
+              <div className="dropdown dropdown-end">
+                <button tabIndex={0} className="btn btn-ghost btn-circle avatar rounded-full transition-all duration-200">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border border-base-300">
+                    <img 
+                      src={user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.displayName || user.email)} 
+                      alt={user.displayName || 'User'} 
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                </button>
+                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-white/90 dark:bg-[#181826] rounded-xl w-56 transition-all duration-200 border border-base-200/40">
+                  <li className="menu-title pb-1 border-b border-base-200 mb-2">
+                    <span className="font-semibold">{user.displayName || 'User'}</span>
+                    <span className="text-xs opacity-60">{user.email}</span>
+                  </li>
+                  <li><Link to="/add-artwork">Add Artwork</Link></li>
+                  <li><Link to="/my-gallery">My Gallery</Link></li>
+                  <li><Link to="/my-favorites">Favorites</Link></li>
+                  <li>
+                    <Link to="/update-profile" className="text-primary">Update Profile</Link>
+                  </li>
+                  <li><button onClick={handleLogout} className="text-error">Logout</button></li>
+                </ul>
+              </div>
+            </>
           ) : (
             <div className="flex gap-2">
               <Link to="/login" className="btn btn-ghost rounded-full">Login</Link>
