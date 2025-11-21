@@ -1,8 +1,10 @@
 
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect, forwardRef } from 'react';
 import gsap from 'gsap';
+import { useAuth } from '../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 /**
  * @typedef {Object} ArtCardProps
@@ -14,8 +16,13 @@ import gsap from 'gsap';
  * @property {boolean} [showOwnerControls]
  */
 
-const ArtworkCard = forwardRef(({ artwork, onLike, onFavorite, onEdit, onDelete, showOwnerControls = false }, ref) => {
+
+const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite, onLike, onEdit, onDelete, showOwnerControls = false }, ref) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState(artwork.imageUrl || artwork.image || "/fallback-art.png");
+  const [favorited, setFavorited] = useState(isFavorited);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
   const handleImageError = () => {
     setImageSrc("/fallback-art.png");
   };
@@ -24,6 +31,10 @@ const ArtworkCard = forwardRef(({ artwork, onLike, onFavorite, onEdit, onDelete,
   const isValidObjectId = typeof artwork._id === 'string' && /^[a-fA-F0-9]{24}$/.test(artwork._id);
 
   const cardRef = ref || useRef(null);
+
+  useEffect(() => {
+    setFavorited(isFavorited);
+  }, [isFavorited]);
 
   useEffect(() => {
     if (cardRef.current) {
@@ -53,6 +64,24 @@ const ArtworkCard = forwardRef(({ artwork, onLike, onFavorite, onEdit, onDelete,
     };
   }, []);
 
+  const handleFavoriteClick = async () => {
+    if (!user) {
+      toast.error('You must be logged in to favorite artworks.');
+      navigate('/login');
+      return;
+    }
+    if (favoriteLoading) return;
+    setFavoriteLoading(true);
+    try {
+      if (onToggleFavorite) {
+        await onToggleFavorite(artwork._id, !favorited);
+        setFavorited(!favorited);
+      }
+    } finally {
+      setFavoriteLoading(false);
+    }
+  };
+
   return (
     <div ref={cardRef} className="rounded-3xl bg-white/5 border border-white/10 shadow-xl backdrop-blur-lg flex flex-col overflow-hidden min-h-[340px] w-full">
       {/* Artwork Image */}
@@ -76,18 +105,30 @@ const ArtworkCard = forwardRef(({ artwork, onLike, onFavorite, onEdit, onDelete,
             type="button"
             className="btn btn-sm btn-error"
             title="Like"
-            onClick={() => onLike && onLike(artwork._id)}
+            onClick={() => {
+              if (!user) {
+                toast.error('You must be logged in to like artworks.');
+                navigate('/login');
+                return;
+              }
+              onLike && onLike(artwork._id);
+            }}
           >
             <span role="img" aria-label="love">❤️</span> {artwork.likesCount}
           </button>
           {/* ⭐ Favourite Button */}
           <button
             type="button"
-            className="btn btn-sm btn-secondary"
-            title="Favorite"
-            onClick={() => onFavorite && onFavorite(artwork._id)}
+            className={`btn btn-sm btn-secondary ${favorited ? 'bg-yellow-400 text-black' : ''}`}
+            title={favorited ? "Unfavorite" : "Favorite"}
+            onClick={handleFavoriteClick}
+            disabled={favoriteLoading}
           >
-            <span role="img" aria-label="favorite">⭐</span>
+            {favorited ? (
+              <span role="img" aria-label="favorite">⭐</span>
+            ) : (
+              <span role="img" aria-label="not-favorite">☆</span>
+            )}
           </button>
           {/* View Details Button (only for valid ObjectId) */}
           {isValidObjectId && (

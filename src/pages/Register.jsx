@@ -8,11 +8,23 @@ const Register = () => {
   const [photoURL, setPhotoURL] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [passwordError, setPasswordError] = useState('');
   const { createUser, signInWithGoogle } = useAuth()
   const navigate = useNavigate()
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    // Password validation: min 6 chars, at least one uppercase, one lowercase
+    const passwordValid =
+      password.length >= 6 &&
+      /[A-Z]/.test(password) &&
+      /[a-z]/.test(password);
+    if (!passwordValid) {
+      setPasswordError('Password must contain uppercase, lowercase letter, and be at least 6 characters.');
+      return;
+    } else {
+      setPasswordError('');
+    }
     setLoading(true);
     try {
       const result = await createUser(email, password, name);
@@ -41,7 +53,7 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-12">
+    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-12 bg-black">
       <div className="card max-w-md w-full p-8 animate-fade-in">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold gradient-text mb-2">Join ARTIFY</h1>
@@ -53,7 +65,7 @@ const Register = () => {
             <label className="block text-sm font-semibold mb-2">Full Name</label>
             <input
               type="text"
-              placeholder="John Doe"
+              placeholder="input name"
               className="input-field"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -96,8 +108,11 @@ const Register = () => {
               minLength={6}
             />
             <p className="text-xs text-gray-500 mt-1">
-              Password must be at least 6 characters
+              Password must be at least 6 characters, contain uppercase and lowercase letters.
             </p>
+            {passwordError && (
+              <p className="text-xs text-red-500 mt-1">{passwordError}</p>
+            )}
           </div>
 
           <button

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { getAuth, updateProfile, updateEmail, updatePassword } from 'firebase/auth';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import { default as api } from '../services/api';
 
 const UpdateProfileModal = ({ user, onClose, onProfileUpdated }) => {
   const auth = getAuth();
@@ -27,12 +27,9 @@ const UpdateProfileModal = ({ user, onClose, onProfileUpdated }) => {
       if (email !== firebaseUser.email) {
         await updateEmail(firebaseUser, email);
       }
-      // Update password
-      if (newPassword) {
-        await updatePassword(firebaseUser, newPassword);
-      }
+        // Password update removed; only update name, photoURL, and email
       // Update MongoDB user document
-      await axios.put('/users/profile', {
+      await api.put('/api/users/profile', {
         name,
         email,
         photoURL,
@@ -51,29 +48,57 @@ const UpdateProfileModal = ({ user, onClose, onProfileUpdated }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="bg-slate-900/80 backdrop-blur-md rounded-xl shadow-lg p-6 w-full max-w-md relative text-slate-100">
-        <h2 className="text-xl font-bold mb-4">Update Profile</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+      <div className="w-full max-w-lg rounded-3xl bg-slate-900/95 border border-slate-700/60 shadow-2xl px-8 py-8 md:px-10 md:py-10">
+        <h2 className="text-2xl md:text-3xl font-semibold text-slate-50 text-center mb-6">Update Profile</h2>
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm font-medium mb-1">Name</label>
-            <input type="text" className="input input-bordered w-full" value={name} onChange={e => setName(e.target.value)} required />
+            <label className="block text-sm font-medium text-slate-200 mb-1">Name</label>
+            <input
+              type="text"
+              className="w-full rounded-xl px-4 py-3 bg-slate-800 text-slate-200 placeholder-slate-400 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
+              placeholder="Name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+            />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
-            <input type="email" className="input input-bordered w-full" value={email} onChange={e => setEmail(e.target.value)} required />
+            <label className="block text-sm font-medium text-slate-200 mb-1">Email</label>
+            <input
+              type="email"
+              value={email}
+              readOnly
+              className="w-full rounded-xl px-4 py-3 bg-slate-800/60 text-slate-200 border border-slate-700 cursor-not-allowed"
+            />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Photo URL</label>
-            <input type="text" className="input input-bordered w-full" value={photoURL} onChange={e => setPhotoURL(e.target.value)} />
+            <label className="block text-sm font-medium text-slate-200 mb-1">Photo URL</label>
+            <input
+              type="text"
+              className="w-full rounded-xl px-4 py-3 bg-slate-800 text-slate-200 placeholder-slate-400 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
+              placeholder="Photo URL"
+              value={photoURL}
+              onChange={e => setPhotoURL(e.target.value)}
+            />
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">New Password <span className="text-xs opacity-60">(optional)</span></label>
-            <input type="password" className="input input-bordered w-full" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
-          </div>
-          <div className="flex justify-end gap-2 mt-6">
-            <button type="button" className="btn btn-ghost" onClick={onClose} disabled={loading}>Cancel</button>
-            <button type="submit" className="btn btn-primary" disabled={loading}>{loading ? 'Saving...' : 'Save'}</button>
+          {/* Password field and label removed */}
+          <div className="mt-6 flex items-center justify-end gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-slate-100"
+              disabled={loading}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-5 py-2.5 rounded-xl bg-violet-600 text-white text-sm font-semibold hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2 focus:ring-offset-slate-900"
+              disabled={loading}
+            >
+              {loading ? 'Saving...' : 'Save'}
+            </button>
           </div>
         </form>
       </div>

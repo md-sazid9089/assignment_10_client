@@ -50,7 +50,7 @@ const Navbar = () => {
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-transparent">
       <div className="w-full flex justify-center">
-      <div className="mt-4 mb-2 flex items-center justify-between gap-6 px-6 py-3 rounded-full bg-slate-900/70 backdrop-blur shadow-lg max-w-5xl w-full transition-all duration-300 border border-slate-700/40 text-slate-100">
+        <div className="mt-4 mb-2 flex items-center justify-between gap-6 px-6 py-3 rounded-full bg-slate-900/70 backdrop-blur shadow-lg max-w-5xl w-full transition-all duration-300 border border-slate-700/40 text-slate-100">
         {/* Left: Brand Logo */}
         <div className="flex items-center gap-4 min-w-[120px]">
           <Link to="/" className="text-2xl font-display font-bold gradient-text tracking-tight select-none drop-shadow-sm">
@@ -89,7 +89,12 @@ const Navbar = () => {
                   <li><Link to="/my-gallery">My Gallery</Link></li>
                   <li><Link to="/my-favorites">Favorites</Link></li>
                   <li>
-                    <Link to="/update-profile" className="text-primary">Update Profile</Link>
+                    <button
+                      className="text-primary w-full text-left"
+                      onClick={() => setIsUpdateProfileOpen(true)}
+                    >
+                      Update Profile
+                    </button>
                   </li>
                   <li><button onClick={handleLogout} className="text-error">Logout</button></li>
                 </ul>
@@ -116,7 +121,15 @@ const Navbar = () => {
             </ul>
           </div>
         </div>
-      </div>
+        </div>
+        {/* Render UpdateProfileModal when open */}
+        {isUpdateProfileOpen && (
+          <UpdateProfileModal
+            user={user}
+            onClose={() => setIsUpdateProfileOpen(false)}
+            onProfileUpdated={handleProfileUpdated}
+          />
+        )}
       </div>
     </header>
   )

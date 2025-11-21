@@ -37,7 +37,7 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-12">
+    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-12 bg-black">
       <div className="card max-w-md w-full p-8 animate-fade-in">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold gradient-text mb-2">Welcome Back</h1>
