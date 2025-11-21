@@ -186,7 +186,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-base-100">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <Fade>
             <div className="text-center mb-12">
@@ -236,12 +236,12 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-base-200">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <Fade>
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">Top Artists of the Week</h2>
-              <p className="text-xl text-base-content/70">Meet our most active and appreciated artists</p>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-50">Top Artists of the Week</h2>
+              <p className="text-xl text-slate-300">Meet our most active and appreciated artists</p>
             </div>
           </Fade>
 
@@ -265,16 +265,16 @@ const Home = () => {
                         <img src={artist.avatar} alt={artist.name} />
                       </div>
                     </div>
-                    <h3 className="card-title text-xl mt-4">{artist.name}</h3>
+                    <h3 className="card-title text-xl mt-4 text-slate-100">{artist.name}</h3>
                     <div className="flex gap-4 mt-2 text-sm">
                       <div className="text-center">
                         <div className="font-bold text-primary text-lg">{artist.artworks}</div>
-                        <div className="text-base-content/70">Artworks</div>
+                        <div className="text-slate-400">Artworks</div>
                       </div>
                       <div className="divider divider-horizontal"></div>
                       <div className="text-center">
                         <div className="font-bold text-error text-lg">{artist.likes}</div>
-                        <div className="text-base-content/70">Likes</div>
+                        <div className="text-slate-400">Likes</div>
                       </div>
                     </div>
                     <button className="btn btn-primary btn-sm mt-4 w-full">
@@ -288,12 +288,12 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-base-100">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <Fade>
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">Community Highlights</h2>
-              <p className="text-xl text-base-content/70">What's happening in the ARTIFY community</p>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-50">Community Highlights</h2>
+              <p className="text-xl text-slate-300">What's happening in the ARTIFY community</p>
             </div>
           </Fade>
 
@@ -349,6 +349,11 @@ const Home = () => {
                     {category}
                   </Link>
                 ))}
+              </div>
+              <div className="mt-12 text-center">
+                <p className="text-2xl md:text-3xl font-semibold text-slate-100 max-w-2xl mx-auto">
+                  "Every masterpiece begins with a single stroke. Let your creativity shine, inspire others, and make your mark on the world. The ARTIFY community believes in your vision—create boldly, share fearlessly"
+                </p>
               </div>
             </div>
           </Fade>

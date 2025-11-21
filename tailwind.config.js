@@ -63,10 +63,10 @@ export default {
       typography: {
         DEFAULT: {
           css: {
-            color: '#e5e7eb',
-            a: { color: '#ec4899', fontWeight: '500' },
+            color: '#4B5563', // body text on light
+            a: { color: '#8b5cf6', fontWeight: '500' },
             h1: {
-              color: '#f9fafb',
+              color: '#111827',
               fontFamily: 'Poppins, system-ui, sans-serif',
               fontWeight: '700',
               fontSize: '3rem',
@@ -75,7 +75,7 @@ export default {
               marginBottom: '1rem',
             },
             h2: {
-              color: '#f9fafb',
+              color: '#111827',
               fontFamily: 'Poppins, system-ui, sans-serif',
               fontWeight: '600',
               fontSize: '2.25rem',
@@ -83,7 +83,7 @@ export default {
               marginBottom: '0.75rem',
             },
             h3: {
-              color: '#f9fafb',
+              color: '#111827',
               fontFamily: 'Poppins, system-ui, sans-serif',
               fontWeight: '600',
               fontSize: '1.75rem',
@@ -91,7 +91,7 @@ export default {
               marginBottom: '0.5rem',
             },
             h4: {
-              color: '#f9fafb',
+              color: '#111827',
               fontFamily: 'Poppins, system-ui, sans-serif',
               fontWeight: '500',
               fontSize: '1.25rem',
@@ -99,12 +99,31 @@ export default {
               marginBottom: '0.5rem',
             },
             p: {
-              color: '#e5e7eb',
+              color: '#4B5563',
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: '1.125rem',
               lineHeight: '1.7',
               marginBottom: '1rem',
             },
+            strong: { color: '#111827' },
+            em: { color: '#4B5563' },
+            blockquote: { color: '#9ca3af' },
+            ul: { color: '#4B5563' },
+            ol: { color: '#4B5563' },
+            li: { color: '#4B5563' },
+            small: { color: '#9ca3af' },
+            span: { color: '#4B5563' },
+          },
+        },
+        dark: {
+          css: {
+            color: '#e5e7eb', // body text on dark
+            a: { color: '#8b5cf6', fontWeight: '500' },
+            h1: { color: '#f9fafb' },
+            h2: { color: '#f9fafb' },
+            h3: { color: '#f9fafb' },
+            h4: { color: '#f9fafb' },
+            p: { color: '#e5e7eb' },
             strong: { color: '#f9fafb' },
             em: { color: '#e5e7eb' },
             blockquote: { color: '#9ca3af' },

@@ -78,10 +78,10 @@ const Navbar = () => {
                     />
                   </div>
                 </button>
-                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-white/90 dark:bg-[#181826] rounded-xl w-56 transition-all duration-200 border border-base-200/40">
+                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-slate-900/80 backdrop-blur-md text-slate-100 rounded-xl w-56 transition-all duration-200 border border-slate-700/40">
                   <li className="menu-title pb-1 border-b border-base-200 mb-2">
-                    <span className="font-semibold">{user.displayName || 'User'}</span>
-                    <span className="text-xs opacity-60">{user.email}</span>
+                    <span className="font-semibold text-slate-100">{user.displayName || 'User'}</span>
+                    <span className="text-xs text-slate-400">{user.email}</span>
                   </li>
                   <li><Link to="/add-artwork">Add Artwork</Link></li>
                   <li><Link to="/my-gallery">My Gallery</Link></li>
@@ -109,7 +109,7 @@ const Navbar = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
               </svg>
             </button>
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-white/90 dark:bg-[#181826] rounded-xl w-52 transition-all duration-200 border border-base-200/40">
+            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-slate-900/80 backdrop-blur-md text-slate-100 rounded-xl w-52 transition-all duration-200 border border-slate-700/40">
               {navLinks}
             </ul>
           </div>
