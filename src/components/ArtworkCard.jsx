@@ -66,9 +66,21 @@ const ArtworkCard = ({ artwork, onLikeUpdate, onFavoriteUpdate, onViewDetails, s
   };
 
   return (
-    <div className="card ...">
-      {/* ...existing code... */}
-      <div className="flex gap-2 mt-2">
+    <div className="bg-white rounded-3xl shadow-md overflow-hidden flex flex-col min-h-[340px] w-full">
+      {/* Artwork Image */}
+      <img
+        src={artwork.image}
+        alt={artwork.title}
+        className="w-full h-48 object-cover"
+      />
+      {/* Content Section */}
+      <div className="flex-1 p-4 flex flex-col">
+        <h3 className="text-lg font-semibold text-slate-900 mb-1 truncate">{artwork.title}</h3>
+        <p className="text-sm text-slate-500 mt-1">By {artwork.artistName}</p>
+        <p className="text-sm text-slate-500">{artwork.category}</p>
+      </div>
+      {/* Actions Row */}
+      <div className="flex items-center justify-between gap-3 px-4 pb-4">
         {/* ❤️ Like Button */}
         <button
           onClick={handleLike}
@@ -89,16 +101,13 @@ const ArtworkCard = ({ artwork, onLikeUpdate, onFavoriteUpdate, onViewDetails, s
         </button>
         {/* 👁 View Details Button */}
         {showActions && (
-          <button
-            onClick={() => onViewDetails && onViewDetails()}
-            className="btn btn-sm btn-outline"
-            title="View Details"
-          >
-            <span role="img" aria-label="view">👁</span>
-          </button>
+          <Link to={`/artworks/${artwork._id}`}>
+            <button className="border border-indigo-500 rounded-xl px-4 py-2 text-sm font-medium text-indigo-600" type="button">
+              View Details
+            </button>
+          </Link>
         )}
       </div>
-      {/* ...existing code... */}
     </div>
   );
 };
