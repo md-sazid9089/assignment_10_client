@@ -85,7 +85,7 @@ const MyGallery = () => {
   const handleUpdateSuccess = (updatedArtwork) => {
     setIsModalOpen(false);
     setSelectedArtwork(null);
-    setReloadGallery(r => !r); // Refetch gallery
+    setArtworks(prevArtworks => prevArtworks.map(art => art._id === updatedArtwork._id ? updatedArtwork : art));
     toast.success('Artwork updated successfully!');
   };
 

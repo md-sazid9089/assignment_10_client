@@ -72,9 +72,9 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div className="bg-base-100 rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto my-8">
+        <div className="bg-black rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto my-8">
           {/* Modal Header */}
-          <div className="sticky top-0 bg-base-100 border-b border-base-300 px-6 py-4 flex items-center justify-between z-10">
+          <div className="sticky top-0 bg-black border-b border-base-300 px-6 py-4 flex items-center justify-between z-10">
             <h2 className="text-2xl font-bold">Edit Artwork</h2>
             <button 
               onClick={onClose}
@@ -91,7 +91,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
             {/* Image URL */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">Image URL <span className="text-error">*</span></span>
+                <span className="label-text font-semibold text-white">Image URL <span className="text-error">*</span></span>
               </label>
               <input
                 type="url"
@@ -99,7 +99,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
                 value={formData.imageUrl}
                 onChange={handleChange}
                 placeholder="https://example.com/image.jpg"
-                className="input input-bordered"
+                className="input input-bordered bg-black text-white border-gray-700"
                 required
               />
               {formData.imageUrl && (
@@ -119,7 +119,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
             {/* Title */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">Title <span className="text-error">*</span></span>
+                <span className="label-text font-semibold text-white">Title <span className="text-error">*</span></span>
               </label>
               <input
                 type="text"
@@ -127,7 +127,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
                 value={formData.title}
                 onChange={handleChange}
                 placeholder="Enter artwork title"
-                className="input input-bordered"
+                className="input input-bordered bg-black text-white border-gray-700"
                 required
               />
             </div>
@@ -136,13 +136,13 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold">Category <span className="text-error">*</span></span>
+                  <span className="label-text font-semibold text-white">Category <span className="text-error">*</span></span>
                 </label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  className="select select-bordered"
+                  className="select select-bordered bg-black text-white border-gray-700"
                   required
                 >
                   <option value="">Select category</option>
@@ -154,7 +154,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
 
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold">Medium <span className="text-error">*</span></span>
+                  <span className="label-text font-semibold text-white">Medium <span className="text-error">*</span></span>
                 </label>
                 <input
                   type="text"
@@ -162,7 +162,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
                   value={formData.medium}
                   onChange={handleChange}
                   placeholder="e.g., Oil on Canvas"
-                  className="input input-bordered"
+                  className="input input-bordered bg-black text-white border-gray-700"
                   required
                 />
               </div>
@@ -171,14 +171,14 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
             {/* Description */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">Description <span className="text-error">*</span></span>
+                <span className="label-text font-semibold text-white">Description <span className="text-error">*</span></span>
               </label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
                 placeholder="Describe your artwork..."
-                className="textarea textarea-bordered h-32"
+                className="textarea textarea-bordered h-32 bg-black text-white border-gray-700"
                 required
               />
             </div>
@@ -187,8 +187,8 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold">Dimensions</span>
-                  <span className="label-text-alt">Optional</span>
+                  <span className="label-text font-semibold text-white">Dimensions</span>
+                  <span className="label-text-alt text-white">Optional</span>
                 </label>
                 <input
                   type="text"
@@ -196,14 +196,14 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
                   value={formData.dimensions}
                   onChange={handleChange}
                   placeholder="e.g., 24 x 36 inches"
-                  className="input input-bordered"
+                  className="input input-bordered bg-black text-white border-gray-700"
                 />
               </div>
 
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold">Price</span>
-                  <span className="label-text-alt">Optional</span>
+                  <span className="label-text font-semibold text-white">Price</span>
+                  <span className="label-text-alt text-white">Optional</span>
                 </label>
                 <input
                   type="number"
@@ -213,7 +213,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
                   placeholder="0.00"
                   min="0"
                   step="0.01"
-                  className="input input-bordered"
+                  className="input input-bordered bg-black text-white border-gray-700"
                 />
               </div>
             </div>
@@ -221,7 +221,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
             {/* Visibility */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">Visibility</span>
+                <span className="label-text font-semibold text-white">Visibility</span>
               </label>
               <div className="flex gap-4">
                 <label className="label cursor-pointer gap-2">
@@ -233,7 +233,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
                     onChange={handleChange}
                     className="radio radio-primary"
                   />
-                  <span className="label-text">Public</span>
+                  <span className="label-text text-white">Public</span>
                 </label>
                 <label className="label cursor-pointer gap-2">
                   <input
@@ -244,7 +244,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
                     onChange={handleChange}
                     className="radio radio-warning"
                   />
-                  <span className="label-text">Private</span>
+                  <span className="label-text text-white">Private</span>
                 </label>
               </div>
             </div>

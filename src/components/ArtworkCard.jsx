@@ -5,6 +5,7 @@ import { useState, useRef, useEffect, forwardRef } from 'react';
 import gsap from 'gsap';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
+import api from '../services/api';
 
 /**
  * @typedef {Object} ArtCardProps
@@ -73,9 +74,32 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
     if (favoriteLoading) return;
     setFavoriteLoading(true);
     try {
-      if (onToggleFavorite) {
-        await onToggleFavorite(artwork._id, !favorited);
-        setFavorited(!favorited);
+      if (!favorited) {
+        // Add favorite in backend
+        await api.post('/api/favorites', { userEmail: user.email, artworkId: artwork._id });
+        setFavorited(true);
+        toast.success('Added to favorites!');
+      } else {
+        // Remove favorite in backend
+        await api.delete('/api/favorites', { data: { userEmail: user.email, artworkId: artwork._id } });
+        setFavorited(false);
+        toast('Removed from favorites.', { icon: '⭐' });
+      }
+      if (onToggleFavorite) onToggleFavorite(artwork._id);
+    } catch (err) {
+      // Improved error logging
+      if (err.response) {
+        console.error('Favorite API error:', {
+          url: err.config?.url,
+          method: err.config?.method,
+          status: err.response.status,
+          data: err.response.data,
+          requestBody: err.config?.data
+        });
+        toast.error(`Error ${err.response.status}: ${err.response.data?.message || 'Failed to update favorite.'}`);
+      } else {
+        console.error('Favorite API error:', err);
+        toast.error('Network or unknown error updating favorite.');
       }
     } finally {
       setFavoriteLoading(false);
@@ -116,20 +140,22 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
           >
             <span role="img" aria-label="love">❤️</span> {artwork.likesCount}
           </button>
-          {/* ⭐ Favourite Button */}
-          <button
-            type="button"
-            className={`btn btn-sm btn-secondary ${favorited ? 'bg-yellow-400 text-black' : ''}`}
-            title={favorited ? "Unfavorite" : "Favorite"}
-            onClick={handleFavoriteClick}
-            disabled={favoriteLoading}
-          >
-            {favorited ? (
-              <span role="img" aria-label="favorite">⭐</span>
-            ) : (
-              <span role="img" aria-label="not-favorite">☆</span>
-            )}
-          </button>
+          {/* ⭐ Favourite Button (only for valid ObjectId) */}
+          {isValidObjectId && (
+            <button
+              type="button"
+              className={`btn btn-sm btn-secondary ${favorited ? 'bg-yellow-400 text-black' : ''}`}
+              title={favorited ? "Unfavorite" : "Favorite"}
+              onClick={handleFavoriteClick}
+              disabled={favoriteLoading}
+            >
+              {favorited ? (
+                <span role="img" aria-label="favorite">⭐</span>
+              ) : (
+                <span role="img" aria-label="not-favorite">☆</span>
+              )}
+            </button>
+          )}
           {/* View Details Button (only for valid ObjectId) */}
           {isValidObjectId && (
             <Link to={`/artworks/${artwork._id}`}>

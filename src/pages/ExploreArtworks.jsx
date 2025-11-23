@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 
 const CATEGORIES = [
   "All",
+  "Recent",
   "Painting",
   "Sculpture",
   "Digital Art",
@@ -34,15 +35,30 @@ const ExploreArtworks = () => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   // Filter by category and search term
-  const filteredArtworks = artworks.filter((art) => {
-    const matchesCategory = selectedCategory === "All" || art.category === selectedCategory;
-    const matchesSearch =
-      !searchTerm ||
-      art.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      art.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      art.userName?.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  let filteredArtworks = artworks;
+  if (selectedCategory === "Recent") {
+    filteredArtworks = [...artworks]
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 12);
+    if (searchTerm) {
+      filteredArtworks = filteredArtworks.filter(
+        (art) =>
+          art.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          art.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          art.userName?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+  } else {
+    filteredArtworks = artworks.filter((art) => {
+      const matchesCategory = selectedCategory === "All" || art.category === selectedCategory;
+      const matchesSearch =
+        !searchTerm ||
+        art.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        art.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        art.userName?.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }
 
   useEffect(() => {
     fetchArtworks();

@@ -5,14 +5,34 @@ import { useAuth } from '../hooks/useAuth';
 import PageLoader from '../components/PageLoader';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { checkLikeStatus, checkFavoriteStatus, addFavorite, removeFavorite, getArtworksByUser, toggleLike } from '../services/api';
 
 const ArtworkDetails = () => {
-  const { id } = useParams()
+    const { id } = useParams()
+    // Polling for real-time likes
+    useEffect(() => {
+      if (!id) return;
+      const interval = setInterval(async () => {
+        try {
+          let baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+          if (!baseURL.endsWith('/api')) baseURL += '/api';
+          const url = `${baseURL}/artworks/${id}`;
+          const response = await axios.get(url);
+          const art = response.data.artwork || response.data.data || response.data;
+          setLikesCount(art && typeof art.likesCount === 'number' ? art.likesCount : 0);
+        } catch (error) {
+          // Optionally handle polling error
+        }
+      }, 5000); // Poll every 5 seconds
+      return () => clearInterval(interval);
+    }, [id]);
   const navigate = useNavigate()
   const { user } = useAuth()
   
   const [artwork, setArtwork] = useState(null);
   const [artistArtworks, setArtistArtworks] = useState([]);
+  const [artistTotalArtworks, setArtistTotalArtworks] = useState(0);
+  const [artistTotalLikes, setArtistTotalLikes] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
@@ -61,14 +81,17 @@ const ArtworkDetails = () => {
 
   const fetchArtistArtworks = async (userEmail) => {
     try {
-      const data = await getArtworksByUser(userEmail)
+      const data = await getArtworksByUser(userEmail);
+      const allArtworks = data.data || [];
+      setArtistTotalArtworks(allArtworks.length);
+      // Calculate total likes for all artworks by this artist
+      const totalLikes = allArtworks.reduce((sum, art) => sum + (art.likesCount || 0), 0);
+      setArtistTotalLikes(totalLikes);
       // Filter out current artwork and limit to 4
-      const otherArtworks = (data.data || [])
-        .filter(art => art._id !== id)
-        .slice(0, 4)
-      setArtistArtworks(otherArtworks)
+      const otherArtworks = allArtworks.filter(art => art._id !== id).slice(0, 4);
+      setArtistArtworks(otherArtworks);
     } catch (error) {
-      console.error('Error fetching artist artworks:', error)
+      console.error('Error fetching artist artworks:', error);
     }
   }
 
@@ -79,12 +102,18 @@ const ArtworkDetails = () => {
       // Check like status
       const likeData = await checkLikeStatus(id, user.email)
       setIsLiked(likeData.isLiked || false)
-      
+
       // Check favorite status
       const favData = await checkFavoriteStatus(user.email, id)
       setIsFavorited(favData.isFavorited || false)
     } catch (error) {
-      console.error('Error checking user interactions:', error)
+      if (error.response?.status === 404) {
+        setIsLiked(false);
+        setIsFavorited(false);
+        // Optionally show a message or ignore
+      } else {
+        console.error('Error checking user interactions:', error);
+      }
     }
   }
 
@@ -121,38 +150,40 @@ const ArtworkDetails = () => {
 
   const handleFavorite = async () => {
     if (!user) {
-      toast.error('Please login to favorite artworks')
-      return
+      toast.error('You must be logged in to favorite artworks.');
+      navigate('/login');
+      return;
     }
-
-    if (isFavoriting) return
-
-    // Optimistic UI update
-    const previousFavorited = isFavorited
-    setIsFavorited(!isFavorited)
-    setIsFavoriting(true)
-
+    if (isFavoriting) return;
+    setIsFavoriting(true);
     try {
-      const response = await toggleFavorite({ artworkId: id })
-      setIsFavorited(response.isFavorited)
-      
-      toast.success(
-        response.isFavorited 
-          ? '✨ Added to favorites!' 
-          : 'Removed from favorites'
-      )
-    } catch (error) {
-      console.error('Error toggling favorite:', error)
-      // Revert optimistic update on error
-      setIsFavorited(previousFavorited)
-      
-      if (error.response?.status === 400) {
-        toast.error('Already in favorites')
+      if (!isFavorited) {
+        // Add favorite in backend
+        await addFavorite({ artworkId: id });
+        setIsFavorited(true);
+        toast.success('Added to favorites!');
       } else {
-        toast.error('Failed to update favorites')
+        // Remove favorite in backend
+        await removeFavorite({ artworkId: id });
+        setIsFavorited(false);
+        toast('Removed from favorites.', { icon: '⭐' });
+      }
+    } catch (err) {
+      if (err.response) {
+        console.error('Favorite API error:', {
+          url: err.config?.url,
+          method: err.config?.method,
+          status: err.response.status,
+          data: err.response.data,
+          requestBody: err.config?.data
+        });
+        toast.error(`Error ${err.response.status}: ${err.response.data?.message || 'Failed to update favorite.'}`);
+      } else {
+        console.error('Favorite API error:', err);
+        toast.error('Network or unknown error updating favorite.');
       }
     } finally {
-      setIsFavoriting(false)
+      setIsFavoriting(false);
     }
   }
 
@@ -245,6 +276,7 @@ const ArtworkDetails = () => {
                   onClick={handleFavorite}
                   disabled={isFavoriting}
                   className={`btn flex-1 ${isFavorited ? 'btn-secondary' : 'btn-outline btn-secondary'}`}
+                  style={{ transition: 'none' }}
                 >
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
@@ -282,7 +314,7 @@ const ArtworkDetails = () => {
               </div>
 
               {/* Artist Info */}
-              <div className="card bg-base-200 shadow-lg p-6">
+              <div className="card bg-black shadow-lg p-6">
                 <div className="flex items-center gap-4">
                   <div className="avatar">
                     <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
@@ -294,12 +326,12 @@ const ArtworkDetails = () => {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold">{artwork.userName}</h3>
-                    <p className="text-sm text-base-content/70">{artwork.userEmail}</p>
-                    {artistArtworks.length > 0 && (
-                      <p className="text-sm text-primary mt-1">
-                        {artistArtworks.length + 1} artworks
-                      </p>
-                    )}
+                    <p className="text-sm text-white">{artwork.userEmail}</p>
+                    <div className="flex gap-4 mt-2">
+                      <div className="badge badge-primary text-xs">Total Artworks: {artistTotalArtworks}</div>
+                      <div className="badge badge-secondary text-xs">Total Likes: {artistTotalLikes}</div>
+                      <button className="btn btn-outline btn-sm" type="button" onClick={() => toast('Following!')}>Following</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -307,6 +339,7 @@ const ArtworkDetails = () => {
               {/* Artwork Details */}
               <div className="space-y-4">
                 <div className="divider"></div>
+                <button className="btn btn-outline btn-sm mb-4" type="button" onClick={() => toast('Comment (dummy)!')}>Comment</button>
                 
                 {/* Medium */}
                 <div className="flex items-start gap-4">
@@ -335,7 +368,7 @@ const ArtworkDetails = () => {
                 {/* Description */}
                 <div>
                   <h3 className="text-xl font-bold mb-3">Description</h3>
-                  <p className="text-base-content/80 leading-relaxed whitespace-pre-wrap">
+                  <p className="text-white leading-relaxed whitespace-pre-wrap">
                     {artwork.description}
                   </p>
                 </div>

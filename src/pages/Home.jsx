@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth'
 import { Fade, Slide, Zoom } from 'react-awesome-reveal'
 import { Typewriter } from 'react-simple-typewriter'
 import { getFeaturedArtworks } from '../services/api'
+import EventsSection from '../components/EventsSection'
 import { DUMMY_FEATURED_ARTWORKS } from '../data/dummyFeaturedArtworks'
 import ArtworkCard from '../components/ArtworkCard'
 import Loader from '../components/Loader'
@@ -187,6 +188,9 @@ const Home = () => {
         </div>
       </section>
 
+  {/* Upcoming Events Section */}
+  {/* ...existing code... */}
+
       <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <Fade>
@@ -351,6 +355,8 @@ const Home = () => {
           </div>
         </section>
       )}
+    {/* Upcoming Events Section at the very bottom */}
+    <EventsSection />
     </div>
   )
 }

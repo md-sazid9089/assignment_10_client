@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import ArtworkCard from '../components/ArtworkCard';
 import Loader from '../components/Loader';
 import PageLoader from '../components/PageLoader';
-import { getUserFavorites, removeFavorite } from '../services/api';
+import api from '../services/api';
 
 const MyFavorites = () => {
   const { user, loading: authLoading } = useAuth();
@@ -18,16 +18,13 @@ const MyFavorites = () => {
     if (!user?.email) return;
     try {
       setLoading(true);
-      // Directly use Axios instance to match backend route
-      const api = (await import('../services/api')).default || (await import('../services/api')).api;
-      const { data } = await api.get(`/api/favorites/${encodeURIComponent(user.email)}`);
-      setFavorites(data);
+      const response = await api.get(`/api/favorites/${encodeURIComponent(user.email)}`);
+      console.log('Favorites API raw response:', response.data);
+      const apiResult = response.data || {};
+      const artworks = Array.isArray(apiResult.data) ? apiResult.data : [];
+      setFavorites(artworks);
     } catch (error) {
-      console.error('Error fetching favorites:', {
-        url: `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/favorites/${user?.email}`,
-        status: error.response?.status,
-        data: error.response?.data,
-      });
+      console.error('Error fetching favorites:', error);
       toast.error('Failed to load favorites');
     } finally {
       setLoading(false);
@@ -43,15 +40,11 @@ const MyFavorites = () => {
   // Handle unfavorite action
   const handleUnfavorite = async (artworkId) => {
     if (!user?.email) return;
-
     try {
       // Optimistic update - remove from UI immediately
-      setFavorites(prevFavorites => 
-        prevFavorites.filter(fav => fav.artwork._id !== artworkId)
-      );
-
+      setFavorites(prevFavorites => prevFavorites.filter(art => art._id !== artworkId));
       // Call API to remove favorite
-      await removeFavorite({ userEmail: user.email, artworkId });
+      await api.delete('/api/favorites', { data: { userEmail: user.email, artworkId } });
       toast.success('Removed from favorites');
     } catch (error) {
       console.error('Error removing favorite:', error);
@@ -148,7 +141,11 @@ const MyFavorites = () => {
                 </div>
                 <div className="stat-title">Categories</div>
                 <div className="stat-value text-secondary">
-                  {new Set(favorites.map(fav => fav.artwork.category)).size}
+                  {new Set(
+                    favorites
+                      .filter(fav => fav && fav.category)
+                      .map(fav => fav.category)
+                  ).size}
                 </div>
                 <div className="stat-desc">Diverse interests</div>
               </div>
@@ -172,7 +169,11 @@ const MyFavorites = () => {
                 </div>
                 <div className="stat-title">Artists</div>
                 <div className="stat-value text-accent">
-                  {new Set(favorites.map(fav => fav.artwork.userEmail)).size}
+                  {new Set(
+                    favorites
+                      .filter(fav => fav && fav.userEmail)
+                      .map(fav => fav.userEmail)
+                  ).size}
                 </div>
                 <div className="stat-desc">Following</div>
               </div>
@@ -183,37 +184,16 @@ const MyFavorites = () => {
         {/* Favorites Grid */}
         {favorites.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {favorites.map((favorite) => (
-              <div key={favorite._id} className="relative">
-                <ArtworkCard artwork={favorite.artwork} />
-                
-                {/* Unfavorite Button Overlay */}
-                <div className="absolute top-4 right-4 z-10">
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleUnfavorite(favorite.artwork._id);
-                    }}
-                    className="btn btn-sm btn-circle btn-error shadow-lg hover:scale-110 transition-transform"
-                    title="Remove from favorites"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            ))}
+            {favorites
+              .filter(artwork => artwork && artwork._id && artwork.title)
+              .map((artwork) => (
+                <ArtworkCard
+                  key={artwork._id}
+                  artwork={artwork}
+                  isFavorited={true}
+                  onToggleFavorite={() => handleUnfavorite(artwork._id)}
+                />
+              ))}
           </div>
         ) : (
           // Empty State

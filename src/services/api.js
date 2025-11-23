@@ -98,7 +98,7 @@ export const createArtwork = async (artworkData) => {
  * @param {Object} artworkData - Updated artwork data
  */
 export const updateArtwork = async (id, artworkData) => {
-  const response = await api.put(`/artworks/${id}`, artworkData)
+  const response = await api.put(`artworks/${id}`, artworkData)
   return response.data
 }
 
@@ -126,7 +126,7 @@ export const toggleLike = async (id) => {
  * @param {string} email - User email
  */
 export const checkLikeStatus = async (id, email) => {
-  const response = await api.get(`/artworks/${id}/is-liked/${email}`)
+  const response = await api.get(`/api/artworks/${id}/is-liked/${email}`)
   return response.data
 }
 
@@ -145,7 +145,7 @@ export const getCategories = async () => {
  * @param {Object} data - { artworkId }
  */
 export const addFavorite = async (data) => {
-  const response = await api.post('/favorites', data)
+  const response = await api.post('/api/favorites', data)
   return response.data
 }
 
@@ -154,7 +154,7 @@ export const addFavorite = async (data) => {
  * @param {string} userEmail - User email
  */
 export const getUserFavorites = async (userEmail) => {
-  const response = await api.get(`/favorites/${userEmail}`)
+  const response = await api.get(`/api/favorites/${userEmail}`)
   return response.data
 }
 
@@ -163,7 +163,7 @@ export const getUserFavorites = async (userEmail) => {
  * @param {Object} data - { artworkId }
  */
 export const removeFavorite = async (data) => {
-  const response = await api.delete('/favorites', { data })
+  const response = await api.delete('/api/favorites', { data })
   return response.data
 }
 
@@ -172,7 +172,7 @@ export const removeFavorite = async (data) => {
  * @param {Object} data - { artworkId }
  */
 export const toggleFavorite = async (data) => {
-  const response = await api.post('/favorites/toggle', data)
+  const response = await api.post('/api/favorites/toggle', data)
   return response.data
 }
 
@@ -182,7 +182,7 @@ export const toggleFavorite = async (data) => {
  * @param {string} artworkId - Artwork ID
  */
 export const checkFavoriteStatus = async (userEmail, artworkId) => {
-  const response = await api.get(`/favorites/check/${userEmail}/${artworkId}`)
+  const response = await api.get(`/api/favorites/check/${userEmail}/${artworkId}`)
   return response.data
 }
 
@@ -191,7 +191,7 @@ export const checkFavoriteStatus = async (userEmail, artworkId) => {
  * @param {string} userEmail - User email
  */
 export const getFavoriteIds = async (userEmail) => {
-  const response = await api.get(`/favorites/${userEmail}/ids`)
+  const response = await api.get(`/api/favorites/${userEmail}/ids`)
   return response.data
 }
 
@@ -200,7 +200,7 @@ export const getFavoriteIds = async (userEmail) => {
  * @param {string} userEmail - User email
  */
 export const getFavoritesCount = async (userEmail) => {
-  const response = await api.get(`/favorites/${userEmail}/count`)
+  const response = await api.get(`/api/favorites/${userEmail}/count`)
   return response.data
 }
 
@@ -209,7 +209,7 @@ export const getFavoritesCount = async (userEmail) => {
  * @param {string} userEmail - User email
  */
 export const clearAllFavorites = async (userEmail) => {
-  const response = await api.delete(`/favorites/${userEmail}/clear`)
+  const response = await api.delete(`/api/favorites/${userEmail}/clear`)
   return response.data
 }
 
