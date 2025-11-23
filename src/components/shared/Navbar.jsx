@@ -43,7 +43,7 @@ const Navbar = () => {
           Explore
         </NavLink>
       </li>
-      {/* existing code continues below */}
+      
     </>
   )
 
@@ -51,24 +51,24 @@ const Navbar = () => {
     <header className="fixed top-0 left-0 w-full z-50 bg-transparent">
       <div className="w-full flex justify-center">
         <div className="mt-4 mb-2 flex items-center justify-between gap-6 px-6 py-3 rounded-full bg-slate-900/70 backdrop-blur shadow-lg max-w-5xl w-full transition-all duration-300 border border-slate-700/40 text-slate-100">
-        {/* Left: Brand Logo */}
+        
         <div className="flex items-center gap-4 min-w-[120px]">
           <Link to="/" className="text-2xl font-display font-bold gradient-text tracking-tight select-none drop-shadow-sm">
             ARTIFY
           </Link>
         </div>
 
-        {/* Center: Main Links */}
+        
         <div className="hidden lg:flex items-center justify-center flex-1">
           <ul className="flex gap-6 text-base font-semibold">
             {navLinks}
           </ul>
         </div>
 
-        {/* Right: Theme Toggle + Profile */}
+        
         <div className="flex items-center gap-3 min-w-[120px] justify-end">
           {user && (
-            <button className="btn btn-outline btn-sm" type="button" onClick={() => window.toast && window.toast('Notifications (dummy)!') || (typeof toast !== 'undefined' && toast('Notifications (dummy)!'))}>
+            <button className="btn btn-outline btn-sm hidden lg:inline-flex" type="button" onClick={() => window.toast && window.toast('Notifications (dummy)!') || (typeof toast !== 'undefined' && toast('Notifications (dummy)!'))}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
             </button>
           )}
@@ -112,7 +112,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile: Hamburger + Links */}
+        
         <div className="lg:hidden flex items-center">
           <div className="dropdown">
             <button tabIndex={0} className="btn btn-ghost rounded-full transition-colors duration-200">
@@ -126,7 +126,7 @@ const Navbar = () => {
           </div>
         </div>
         </div>
-        {/* Render UpdateProfileModal when open */}
+        
         {isUpdateProfileOpen && (
           <UpdateProfileModal
             user={user}

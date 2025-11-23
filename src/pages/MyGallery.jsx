@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Fade, Zoom } from 'react-awesome-reveal'
@@ -16,7 +17,7 @@ const MyGallery = () => {
   const [selectedArtwork, setSelectedArtwork] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Add reload trigger for refetch after upload
+  
   const [reloadGallery, setReloadGallery] = useState(false);
   useEffect(() => {
     if (user?.email) {
@@ -85,7 +86,8 @@ const MyGallery = () => {
   const handleUpdateSuccess = (updatedArtwork) => {
     setIsModalOpen(false);
     setSelectedArtwork(null);
-    setArtworks(prevArtworks => prevArtworks.map(art => art._id === updatedArtwork._id ? updatedArtwork : art));
+    setArtworks(prevArtworks => prevArtworks.map(art => (art && art._id && updatedArtwork && updatedArtwork._id && art._id === updatedArtwork._id) ? updatedArtwork : art));
+    setReloadGallery(r => !r); // Force refetch from server for latest info
     toast.success('Artwork updated successfully!');
   };
 
@@ -96,7 +98,7 @@ const MyGallery = () => {
   return (
     <div className="min-h-screen py-12 bg-black">
       <div className="container mx-auto px-4">
-        {/* Header */}
+        
         <Fade>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
             <div>
@@ -116,7 +118,7 @@ const MyGallery = () => {
           </div>
         </Fade>
 
-        {/* Stats */}
+        
         {artworks.length > 0 && (
           <Fade delay={100}>
             <div className="stats shadow mb-8 w-full md:w-auto">
@@ -145,7 +147,7 @@ const MyGallery = () => {
           </Fade>
         )}
 
-        {/* Artworks Grid */}
+        
         {artworks.length > 0 ? (
           <Fade cascade damping={0.05}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -178,7 +180,7 @@ const MyGallery = () => {
           </Zoom>
         )}
 
-        {/* Edit Modal */}
+        
         {isModalOpen && selectedArtwork && (
           <ArtworkEditModal
             artwork={selectedArtwork}

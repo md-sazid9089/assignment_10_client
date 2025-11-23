@@ -1,19 +1,5 @@
 import PropTypes from "prop-types";
-/**
- * Reusable Loading Spinner Component
- * Can be used for data fetching, authentication, and any async operations
- * 
- */
-/**
- * Reusable Loading Spinner Component
- * Can be used for data fetching, authentication, and any async operations
- * 
- * @param {string} size - Size of the spinner: 'sm', 'md', 'lg', 'xl'
- * @param {string} variant - Visual style: 'spinner', 'dots', 'ring', 'ball'
- * @param {string} message - Optional loading message to display
- * @param {boolean} fullScreen - Whether to cover the full screen
- * @param {string} overlay - Background overlay: 'none', 'light', 'dark', 'blur'
- */
+
 const Loader = ({ 
   size = 'lg', 
   variant = 'spinner', 
@@ -62,15 +48,15 @@ const Loader = ({
   return (
     <div className={containerClasses}>
       <div className="flex flex-col items-center gap-4">
-        {/* Spinner */}
+        
         <div className="relative">
           {variants[variant]}
           
-          {/* Pulsing ring effect */}
+          
           <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping"></div>
         </div>
 
-        {/* Loading Message */}
+        
         {message && (
           <p className="text-base-content/70 text-center font-medium animate-pulse">
             {message}
@@ -92,37 +78,4 @@ Loader.propTypes = {
 export default Loader
 
 
-/**
- * USAGE EXAMPLES:
- * 
- * // Basic loader
- * <Loader />
- * 
- * // With message
- * <Loader message="Loading artworks..." />
- * 
- * // Different sizes
- * <Loader size="sm" message="Loading..." />
- * <Loader size="xl" />
- * 
- * // Different variants
- * <Loader variant="dots" />
- * <Loader variant="ring" />
- * <Loader variant="ball" />
- * 
- * // Full screen with overlay
- * <Loader fullScreen overlay="blur" message="Loading..." />
- * 
- * // In a component:
- * {loading && <Loader message="Fetching data..." />}
- * 
- * // Auth loading:
- * {authLoading && (
- *   <Loader 
- *     fullScreen 
- *     overlay="blur" 
- *     message="Authenticating..." 
- *     variant="ring"
- *   />
- * )}
- */
+

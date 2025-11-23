@@ -5,7 +5,7 @@ const ArtworkDetailsModal = ({ artwork, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
       <div className="relative w-full max-w-xl rounded-3xl bg-[#070b1b] border border-white/10 shadow-2xl p-6 text-slate-100">
-        {/* Close button */}
+        
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-slate-300 hover:text-white text-xl font-bold"
@@ -13,7 +13,7 @@ const ArtworkDetailsModal = ({ artwork, onClose }) => {
         >
           &times;
         </button>
-        {/* Image */}
+        
         <div className="mb-6 flex justify-center">
           <img
             src={artwork.imageUrl}
@@ -21,7 +21,7 @@ const ArtworkDetailsModal = ({ artwork, onClose }) => {
             className="h-64 w-full object-cover rounded-2xl shadow-lg border border-white/10"
           />
         </div>
-        {/* Details */}
+        
         <div className="space-y-3">
           <span className="inline-block rounded-full bg-purple-500/90 px-3 py-1 text-xs font-semibold text-white shadow-lg mb-2">
             {artwork.category}

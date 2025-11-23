@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { gsap } from 'gsap';
@@ -34,7 +35,7 @@ const ExploreArtworks = () => {
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
-  // Filter by category and search term
+  
   let filteredArtworks = artworks;
   if (selectedCategory === "Recent") {
     filteredArtworks = [...artworks]
@@ -90,7 +91,6 @@ const ExploreArtworks = () => {
       if (selectedCategory && selectedCategory !== "All") {
         params.category = selectedCategory;
       }
-
       const data = await getPublicArtworks(params);
       let artworks = data.data || [];
       if (!artworks.length) {
@@ -108,8 +108,6 @@ const ExploreArtworks = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters)
-    
-    // Update URL query parameters
     const params = {}
     if (newFilters.search) params.search = newFilters.search
     if (newFilters.category) params.category = newFilters.category
@@ -117,7 +115,6 @@ const ExploreArtworks = () => {
   }
 
   const handleLike = (artworkId) => {
-    // Example: increment likes locally, or call API
     setArtworks(prevArtworks =>
       prevArtworks.map(artwork =>
         artwork._id === artworkId
@@ -125,11 +122,9 @@ const ExploreArtworks = () => {
           : artwork
       )
     );
-    // TODO: Call backend API for like if needed
   };
 
   const handleFavorite = (artworkId) => {
-    // Example: toggle favorite locally, or call API
     setArtworks(prevArtworks =>
       prevArtworks.map(artwork =>
         artwork._id === artworkId
@@ -137,13 +132,12 @@ const ExploreArtworks = () => {
           : artwork
       )
     );
-    // TODO: Call backend API for favorite if needed
   };
 
   return (
     <section className="min-h-screen bg-[#050818] text-slate-50 pt-32 pb-16">
       <div className="max-w-6xl mx-auto px-4">
-        {/* Header */}
+        
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">Explore Artworks</h1>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">
@@ -151,7 +145,7 @@ const ExploreArtworks = () => {
           </p>
         </div>
 
-        {/* Search and Category Selector */}
+        
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6 gap-4 mb-6">
           <div className="flex-1">
             <input
@@ -182,7 +176,7 @@ const ExploreArtworks = () => {
           </div>
         </div>
 
-        {/* Results Count & Sort */}
+        
         {!loading && filteredArtworks.length > 0 && (
           <div className="mb-6 text-sm text-slate-400">
             Showing <span className="font-semibold text-purple-400">{filteredArtworks.length}</span> artwork{filteredArtworks.length !== 1 ? 's' : ''}
@@ -192,10 +186,10 @@ const ExploreArtworks = () => {
           </div>
         )}
 
-        {/* Loading State */}
+        
         {loading && <Loader message="Loading artworks..." />}
 
-        {/* Artworks Grid */}
+        
         {!loading && filteredArtworks.length > 0 && (
           <div
             id="explore-grid"
@@ -213,7 +207,7 @@ const ExploreArtworks = () => {
           </div>
         )}
 
-        {/* Empty State */}
+        
         {!loading && filteredArtworks.length === 0 && (
           <div className="text-center py-20">
             <div className="text-8xl mb-6">🎨</div>
@@ -243,7 +237,7 @@ const ExploreArtworks = () => {
             </button>
           </div>
         )}
-        {/* Artwork Details Modal */}
+        
         {isDetailsOpen && selectedArtwork && (
           <ArtworkDetailsModal
             artwork={selectedArtwork}

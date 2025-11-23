@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="bg-black text-slate-100">
       <div className="container-custom py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Brand */}
+          
           <div>
             <h3 className="text-2xl font-display font-bold gradient-text mb-4">
               ARTIFY
@@ -17,7 +17,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
+          
           <div>
             <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
             <ul className="space-y-2">
@@ -39,7 +39,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Categories */}
+          
           <div>
             <h4 className="font-semibold text-lg mb-4">Categories</h4>
             <ul className="space-y-2 text-sm">
@@ -50,7 +50,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Social */}
+          
           <div>
             <h4 className="font-semibold text-lg mb-4">Connect</h4>
             <div className="flex gap-4">
@@ -74,7 +74,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Bar */}
+      
       <div className="border-t border-base-300">
         <div className="container-custom py-6">
           <div className="text-center text-sm opacity-70">

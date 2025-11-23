@@ -7,15 +7,7 @@ import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import api from '../services/api';
 
-/**
- * @typedef {Object} ArtCardProps
- * @property {Object} artwork
- * @property {(id: string) => void} [onLike]
- * @property {(id: string) => void} [onFavorite]
- * @property {(artwork: Object) => void} [onEdit]
- * @property {(id: string) => void} [onDelete]
- * @property {boolean} [showOwnerControls]
- */
+
 
 
 const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite, onLike, onEdit, onDelete, showOwnerControls = false }, ref) => {
@@ -28,7 +20,7 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
     setImageSrc("/fallback-art.png");
   };
 
-  // Helper to check valid MongoDB ObjectId (24 hex chars)
+  
   const isValidObjectId = typeof artwork._id === 'string' && /^[a-fA-F0-9]{24}$/.test(artwork._id);
 
   const cardRef = ref || useRef(null);
@@ -47,7 +39,7 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
     }
   }, []);
 
-  // Hover effect
+  
   useEffect(() => {
     const el = cardRef.current;
     if (!el) return;
@@ -75,19 +67,19 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
     setFavoriteLoading(true);
     try {
       if (!favorited) {
-        // Add favorite in backend
+        
         await api.post('/api/favorites', { userEmail: user.email, artworkId: artwork._id });
         setFavorited(true);
         toast.success('Added to favorites!');
       } else {
-        // Remove favorite in backend
+        
         await api.delete('/api/favorites', { data: { userEmail: user.email, artworkId: artwork._id } });
         setFavorited(false);
         toast('Removed from favorites.', { icon: '⭐' });
       }
       if (onToggleFavorite) onToggleFavorite(artwork._id);
     } catch (err) {
-      // Improved error logging
+      
       if (err.response) {
         console.error('Favorite API error:', {
           url: err.config?.url,

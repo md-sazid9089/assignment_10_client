@@ -1,19 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import gsap from "gsap";
 
-/**
- * @typedef {Object} ArtistCardProps
- * @property {number} rank
- * @property {string} name
- * @property {string} initials
- * @property {string} [avatarUrl]
- * @property {number} totalArtworks
- * @property {number} totalLikes
- */
-
-/**
- * @param {ArtistCardProps} props
- */
+// ...existing code...
 const ArtistCard = ({ rank, name, initials, avatarUrl, totalArtworks, totalLikes }) => {
   const cardRef = useRef(null);
 

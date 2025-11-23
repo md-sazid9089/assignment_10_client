@@ -1,3 +1,4 @@
+
 import { Fade, Slide, Zoom, Bounce } from 'react-awesome-reveal'
 import { Typewriter } from 'react-simple-typewriter'
 import { useTheme } from '../hooks/useTheme'
@@ -9,7 +10,7 @@ const ThemeAnimationDemo = () => {
   return (
     <div className="min-h-screen bg-base-100">
       <div className="container mx-auto px-4 py-12">
-        {/* Header Section */}
+        
         <Fade>
           <div className="text-center mb-16">
             <h1 className="text-5xl font-bold mb-4">
@@ -21,7 +22,7 @@ const ThemeAnimationDemo = () => {
           </div>
         </Fade>
 
-        {/* Theme Toggle Demo */}
+        
         <Zoom>
           <section className="card bg-base-200 shadow-xl mb-12">
             <div className="card-body">
@@ -65,7 +66,7 @@ const ThemeAnimationDemo = () => {
           </section>
         </Zoom>
 
-        {/* Typewriter Demo */}
+        
         <Slide direction="left">
           <section className="card bg-gradient-to-br from-primary to-secondary text-white shadow-xl mb-12">
             <div className="card-body">
@@ -119,7 +120,7 @@ const ThemeAnimationDemo = () => {
           </section>
         </Slide>
 
-        {/* Fade Animation Demo */}
+        
         <section className="mb-12">
           <h2 className="text-3xl font-bold mb-6 text-center">Fade Animations</h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -156,7 +157,7 @@ const ThemeAnimationDemo = () => {
           </div>
         </section>
 
-        {/* Slide Animation Demo */}
+        
         <section className="mb-12">
           <h2 className="text-3xl font-bold mb-6 text-center">Slide Animations</h2>
           <div className="grid md:grid-cols-2 gap-6">
@@ -199,7 +200,7 @@ const ThemeAnimationDemo = () => {
           </div>
         </section>
 
-        {/* Zoom Animation Demo */}
+        
         <section className="mb-12">
           <h2 className="text-3xl font-bold mb-6 text-center">Zoom Animations</h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -227,7 +228,7 @@ const ThemeAnimationDemo = () => {
           </div>
         </section>
 
-        {/* Cascade Demo */}
+        
         <section className="mb-12">
           <h2 className="text-3xl font-bold mb-6 text-center">Cascade Effect</h2>
           <Fade cascade damping={0.2}>
@@ -248,7 +249,7 @@ const ThemeAnimationDemo = () => {
           </Fade>
         </section>
 
-        {/* Bounce Demo */}
+        
         <section className="mb-12">
           <h2 className="text-3xl font-bold mb-6 text-center">Bounce Animation</h2>
           <div className="flex justify-center gap-8">
@@ -267,7 +268,7 @@ const ThemeAnimationDemo = () => {
           </div>
         </section>
 
-        {/* Integration Examples */}
+        
         <Slide direction="up">
           <section className="card bg-base-200 shadow-xl mb-12">
             <div className="card-body">
@@ -312,7 +313,7 @@ const ThemeAnimationDemo = () => {
           </section>
         </Slide>
 
-        {/* Back to Home */}
+        
         <Fade>
           <div className="text-center">
             <Link to="/" className="btn btn-primary btn-lg">

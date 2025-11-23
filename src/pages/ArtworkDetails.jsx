@@ -9,7 +9,6 @@ import { checkLikeStatus, checkFavoriteStatus, addFavorite, removeFavorite, getA
 
 const ArtworkDetails = () => {
     const { id } = useParams()
-    // Polling for real-time likes
     useEffect(() => {
       if (!id) return;
       const interval = setInterval(async () => {
@@ -21,7 +20,6 @@ const ArtworkDetails = () => {
           const art = response.data.artwork || response.data.data || response.data;
           setLikesCount(art && typeof art.likesCount === 'number' ? art.likesCount : 0);
         } catch (error) {
-          // Optionally handle polling error
         }
       }, 5000); // Poll every 5 seconds
       return () => clearInterval(interval);
@@ -66,9 +64,7 @@ const ArtworkDetails = () => {
       setArtwork(art);
       setLikesCount(art && typeof art.likesCount === 'number' ? art.likesCount : 0);
 
-      // Fetch other artworks by the same artist (optional, can keep existing logic)
       if (art && art.userEmail) {
-        // ...existing code...
       }
     } catch (error) {
       console.error('Error fetching artwork:', error);
@@ -110,7 +106,6 @@ const ArtworkDetails = () => {
       if (error.response?.status === 404) {
         setIsLiked(false);
         setIsFavorited(false);
-        // Optionally show a message or ignore
       } else {
         console.error('Error checking user interactions:', error);
       }
@@ -206,7 +201,6 @@ const ArtworkDetails = () => {
   // Only render details if artwork is loaded
   return (
     <div className="min-h-screen py-12 bg-black">
-      {/* Motivational Art Speech */}
       <div className="max-w-3xl mx-auto mb-10 text-center px-4">
         <Fade>
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Art is the journey of a free soul.</h2>
@@ -216,7 +210,6 @@ const ArtworkDetails = () => {
         </Fade>
       </div>
       <div className="container mx-auto px-4">
-        {/* Back Button */}
         <Fade>
           <button
             onClick={() => navigate(-1)} 
