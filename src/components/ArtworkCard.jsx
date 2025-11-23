@@ -68,12 +68,12 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
     try {
       if (!favorited) {
         
-        await api.post('/api/favorites', { userEmail: user.email, artworkId: artwork._id });
+        await api.post('/favorites', { userEmail: user.email, artworkId: artwork._id });
         setFavorited(true);
         toast.success('Added to favorites!');
       } else {
         
-        await api.delete('/api/favorites', { data: { userEmail: user.email, artworkId: artwork._id } });
+        await api.delete('/favorites', { data: { userEmail: user.email, artworkId: artwork._id } });
         setFavorited(false);
         toast('Removed from favorites.', { icon: '⭐' });
       }

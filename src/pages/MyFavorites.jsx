@@ -18,7 +18,7 @@ const MyFavorites = () => {
     if (!user?.email) return;
     try {
       setLoading(true);
-      const response = await api.get(`/api/favorites/${encodeURIComponent(user.email)}`);
+      const response = await api.get(`/favorites/${encodeURIComponent(user.email)}`);
       console.log('Favorites API raw response:', response.data);
       const apiResult = response.data || {};
       const artworks = Array.isArray(apiResult.data) ? apiResult.data : [];
@@ -44,7 +44,7 @@ const MyFavorites = () => {
       // Optimistic update - remove from UI immediately
       setFavorites(prevFavorites => prevFavorites.filter(art => art._id !== artworkId));
       // Call API to remove favorite
-      await api.delete('/api/favorites', { data: { userEmail: user.email, artworkId } });
+      await api.delete('/favorites', { data: { userEmail: user.email, artworkId } });
       toast.success('Removed from favorites');
     } catch (error) {
       console.error('Error removing favorite:', error);

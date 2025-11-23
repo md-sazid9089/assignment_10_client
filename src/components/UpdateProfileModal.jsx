@@ -29,7 +29,7 @@ const UpdateProfileModal = ({ user, onClose, onProfileUpdated }) => {
       }
         // Password update removed; only update name, photoURL, and email
       // Update MongoDB user document
-      await api.put('/api/users/profile', {
+      await api.put('/users/profile', {
         name,
         email,
         photoURL,
