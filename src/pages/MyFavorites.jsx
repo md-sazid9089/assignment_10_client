@@ -18,14 +18,28 @@ const MyFavorites = () => {
     if (!user?.email) return;
     try {
       setLoading(true);
-      const response = await api.get(`/favorites/${encodeURIComponent(user.email)}`);
-      console.log('Favorites API raw response:', response.data);
-      const apiResult = response.data || {};
-      const artworks = Array.isArray(apiResult.data) ? apiResult.data : [];
-      setFavorites(artworks);
+      const url = `/favorites/${encodeURIComponent(user.email)}`;
+      console.log('[MyFavorites] Requesting favorites:', {
+        url,
+        method: 'GET',
+        baseURL: api.defaults.baseURL
+      });
+      const response = await api.get(url);
+      console.log('[MyFavorites] Raw response:', response);
+      console.log('[MyFavorites] Response data:', response.data);
+      if (response.data && response.data.success && Array.isArray(response.data.data)) {
+        setFavorites(response.data.data);
+      } else {
+        console.warn('[MyFavorites] Unexpected response shape:', response.data);
+        setFavorites([]);
+      }
     } catch (error) {
-      console.error('Error fetching favorites:', error);
+      console.error('[MyFavorites] Error fetching favorites:', error);
+      if (error.response) {
+        console.error('[MyFavorites] Error response:', error.response.data);
+      }
       toast.error('Failed to load favorites');
+      setFavorites([]);
     } finally {
       setLoading(false);
     }
