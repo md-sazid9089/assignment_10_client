@@ -73,19 +73,14 @@ const AddArtwork = () => {
         userName: user.displayName || user.email.split("@")[0],
         userEmail: user.email,
       };
-      const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-      // Ensure /api/artworks is always used
-      const url = apiBase.endsWith("/api") ? `${apiBase}/artworks` : `${apiBase}/api/artworks`;
-      const res = await fetch(url, {
-        method: "POST",
+      // Use central axios instance for API calls
+      const { default: api } = await import('../services/api');
+      const response = await api.post('/artworks', payload, {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + idToken,
+          Authorization: `Bearer ${idToken}`,
         },
-        body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (res.ok) {
+      if (response && response.data) {
         setSuccess("Artwork uploaded successfully!");
         setFormData({
           imageUrl: "",

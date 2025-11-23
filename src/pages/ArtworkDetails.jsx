@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Fade, Zoom } from 'react-awesome-reveal';
 import { useAuth } from '../hooks/useAuth';
 import PageLoader from '../components/PageLoader';
-import axios from 'axios';
+import api from '../services/api';
 import toast from 'react-hot-toast';
 import { checkLikeStatus, checkFavoriteStatus, addFavorite, removeFavorite, getArtworksByUser, toggleLike } from '../services/api';
 
@@ -13,15 +13,12 @@ const ArtworkDetails = () => {
       if (!id) return;
       const interval = setInterval(async () => {
         try {
-          let baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-          if (!baseURL.endsWith('/api')) baseURL += '/api';
-          const url = `${baseURL}/artworks/${id}`;
-          const response = await axios.get(url);
+          const response = await api.get(`/api/artworks/${id}`);
           const art = response.data.artwork || response.data.data || response.data;
           setLikesCount(art && typeof art.likesCount === 'number' ? art.likesCount : 0);
         } catch (error) {
         }
-      }, 5000); // Poll every 5 seconds
+      }, 5000);
       return () => clearInterval(interval);
     }, [id]);
   const navigate = useNavigate()
@@ -53,13 +50,7 @@ const ArtworkDetails = () => {
   const fetchArtworkDetails = async () => {
     setLoading(true);
     try {
-      // Build correct backend URL
-      let baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      // Ensure /api/artworks/:id is used
-      if (!baseURL.endsWith('/api')) baseURL += '/api';
-      const url = `${baseURL}/artworks/${id}`;
-      const response = await axios.get(url);
-      // Support both { artwork } and direct artwork object
+      const response = await api.get(`/api/artworks/${id}`);
       const art = response.data.artwork || response.data.data || response.data;
       setArtwork(art);
       setLikesCount(art && typeof art.likesCount === 'number' ? art.likesCount : 0);
