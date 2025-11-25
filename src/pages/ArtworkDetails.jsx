@@ -135,25 +135,26 @@ const ArtworkDetails = () => {
   }
 
   const handleFavorite = async () => {
-    if (!user) {
-      toast.error('You must be logged in to favorite artworks.');
-      navigate('/login');
-      return;
+  if (!user) {
+    toast.error('You must be logged in to favorite artworks.');
+    navigate('/login');
+    return;
+  }
+  if (isFavoriting) return;
+  setIsFavoriting(true);
+  try {
+    if (!isFavorited) {
+      // Add favorite in backend
+      await addFavorite({ userEmail: user.email, artworkId: id });
+      setIsFavorited(true);
+      toast.success('Added to favorites!');
+    } else {
+      // Remove favorite in backend
+      await removeFavorite({ userEmail: user.email, artworkId: id });
+      setIsFavorited(false);
+      toast('Removed from favorites.', { icon: '⭐' });
     }
-    if (isFavoriting) return;
-    setIsFavoriting(true);
-    try {
-      if (!isFavorited) {
-        // Add favorite in backend
-        await addFavorite({ artworkId: id });
-        setIsFavorited(true);
-        toast.success('Added to favorites!');
-      } else {
-        // Remove favorite in backend
-        await removeFavorite({ artworkId: id });
-        setIsFavorited(false);
-        toast('Removed from favorites.', { icon: '⭐' });
-      }
+
     } catch (err) {
       if (err.response) {
         console.error('Favorite API error:', {
