@@ -50,7 +50,7 @@ const ArtworkDetails = () => {
   const fetchArtworkDetails = async () => {
     setLoading(true);
     try {
-      const response = await api.get(`/api/artworks/${id}`);
+      const response = await api.get(`/artworks/${id}`);
       const art = response.data.artwork || response.data.data || response.data;
       setArtwork(art);
       setLikesCount(art && typeof art.likesCount === 'number' ? art.likesCount : 0);
