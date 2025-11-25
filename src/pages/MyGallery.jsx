@@ -56,9 +56,9 @@ const MyGallery = () => {
       reverseButtons: true
     })
 
-    if (result.isConfirmed) {
+        if (result.isConfirmed) {
       try {
-        await deleteArtwork(artwork._id)
+        await deleteArtwork(artwork._id, user?.email)
         
         // Remove from state
         setArtworks(prevArtworks => 

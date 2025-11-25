@@ -71,8 +71,12 @@ export const updateArtwork = async (id, artworkData) => {
   return response.data
 }
 
-export const deleteArtwork = async (id) => {
-  const response = await api.delete(`/artworks/${id}`)
+export const deleteArtwork = async (id, userEmail = null) => {
+  // Axios `delete` can send a request body via the `data` config option.
+  // We keep this optional so the frontend can provide an email if needed,
+  // but the server primarily uses the verified token (`req.user`).
+  const config = userEmail ? { data: { userEmail } } : {}
+  const response = await api.delete(`/artworks/${id}`, config)
   return response.data
 }
 

@@ -98,6 +98,8 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
     }
   };
 
+  const isOwner = user && user.email && artwork.userEmail && user.email.toLowerCase() === artwork.userEmail.toLowerCase();
+
   return (
     <div ref={cardRef} className="rounded-3xl bg-white/5 border border-white/10 shadow-xl backdrop-blur-lg flex flex-col overflow-hidden min-h-[340px] w-full">
       {/* Artwork Image */}
@@ -161,8 +163,8 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
             </Link>
           )}
         </div>
-        {/* Owner Controls: Update/Delete */}
-        {showOwnerControls && (
+        {/* Owner Controls: Update/Delete (only show to actual owner) */}
+        {showOwnerControls && isOwner && (
           <div className="flex justify-between items-center mt-3 gap-3">
             <button
               type="button"
