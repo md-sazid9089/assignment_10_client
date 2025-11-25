@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { updateArtwork } from '../services/api'
 import toast from 'react-hot-toast'
+import { useAuth } from '../hooks/useAuth'
 
 const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
     visibility: artwork.visibility || 'Public'
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { user } = useAuth()
 
   const categories = [
     'Painting',
@@ -48,8 +50,17 @@ const ArtworkEditModal = ({ artwork, isOpen, onClose, onSuccess }) => {
     setIsSubmitting(true)
 
     try {
-      const response = await updateArtwork(artwork._id, formData)
-      onSuccess(response.artwork)
+      // Include server-verified fields where possible. Lowercase email to match schema.
+      const payload = {
+        ...formData,
+        userEmail: user?.email ? user.email.toLowerCase() : artwork.userEmail,
+        userName: user?.displayName || artwork.userName
+      }
+
+      const result = await updateArtwork(artwork._id, payload)
+      // `result` is the server response body. Artwork is available at `result.data`.
+      const updatedArtwork = result?.data || result
+      onSuccess(updatedArtwork)
       toast.success('Artwork updated successfully!')
       onClose()
     } catch (error) {
