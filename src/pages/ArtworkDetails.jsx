@@ -119,10 +119,13 @@ const ArtworkDetails = () => {
     setIsLiking(true)
 
     try {
-      const response = await toggleLike(id)
-      setIsLiked(response.isLiked)
-      setLikesCount(response.likesCount)
-      toast.success(response.isLiked ? 'Added to likes' : 'Removed from likes')
+      const response = await toggleLike(id, user?.email)
+      // response may be { liked, likesCount, artwork } or similar
+      const liked = response.liked ?? response.isLiked ?? false
+      const count = response.likesCount ?? response.count ?? likesCount
+      setIsLiked(!!liked)
+      setLikesCount(typeof count === 'number' ? count : likesCount)
+      toast.success(liked ? 'Added to likes' : 'Removed from likes')
     } catch (error) {
       console.error('Error toggling like:', error)
       // Revert optimistic update on error

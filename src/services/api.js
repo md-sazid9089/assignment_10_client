@@ -80,9 +80,13 @@ export const deleteArtwork = async (id, userEmail = null) => {
   return response.data
 }
 
-export const toggleLike = async (id) => {
-  const response = await api.patch(`/artworks/${id}/like`)
-  return response.data
+export const toggleLike = async (id, userEmail = null) => {
+  // Send userEmail in the request body for demo-mode backends that rely on it.
+  const data = userEmail ? { userEmail } : {}
+  const response = await api.patch(`/artworks/${id}/like`, data)
+  // Normalize response: many endpoints wrap result in `data`.
+  const payload = response.data || {}
+  return payload.data || payload
 }
 
 export const checkLikeStatus = async (id, email) => {

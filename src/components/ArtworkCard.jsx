@@ -10,7 +10,7 @@ import api from '../services/api';
 
 
 
-const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite, onLike, onEdit, onDelete, showOwnerControls = false }, ref) => {
+const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite, onLike, onLikeUpdate, onEdit, onDelete, showOwnerControls = false }, ref) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState(artwork.imageUrl || artwork.image || "/fallback-art.png");
@@ -129,7 +129,12 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
                 navigate('/login');
                 return;
               }
-              onLike && onLike(artwork._id);
+              // Prefer onLike, but fall back to onLikeUpdate (used by some parents)
+              if (onLike) {
+                onLike(artwork._id, user.email)
+              } else if (onLikeUpdate) {
+                onLikeUpdate(artwork._id, user.email)
+              }
             }}
           >
             <span role="img" aria-label="love">❤️</span> {artwork.likesCount}
