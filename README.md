@@ -1,7 +1,7 @@
 # ARTIFY Client
 
 Frontend application for ARTIFY - A Creative Artwork Showcase Platform
-
+live url :https://assignment-10-client-h8xu.vercel.app
 ## 🚀 Tech Stack
 
 - **React 18** - UI library
@@ -23,285 +23,148 @@ Frontend application for ARTIFY - A Creative Artwork Showcase Platform
 artify-client/
 ├── public/
 │   └── _redirects              # Netlify SPA routing
+﻿# Client — Art Gallery (Vite + React)
+
+This folder contains the frontend (client) application for the Art Gallery project. It is a Vite + React single-page application that authenticates users with Firebase and communicates with a separate backend API for data persistence and user-scoped operations.
+
+## 1. Project Overview
+
+- Purpose: Provide a responsive UI for browsing and managing artworks in a MERN-style stack. The client handles presentation, client-side routing and authentication; the backend provides the API and data persistence (Express + MongoDB).
+- Key UI features: artwork listing, artwork detail view, liking, favoriting, add/update/delete for user content, search and category filters, theme toggle, and in-app feedback (loaders/toasts).
+
+## 2. Live Client URL
+
+- Deployed Vercel client URL: https://<your-vercel-client-url>
+- Client environment variable expected for API base URL: `VITE_API_URL`
+
+Replace the placeholder above with your actual Vercel deployment URL.
+
+## 3. Technologies Used
+
+- React (Vite)
+- React Router (v6)
+- Firebase Authentication (Email/Password and Google)
+- Axios
+- Tailwind CSS
+- Additional UI libraries present in the project: React Image Gallery, React Simple Typewriter, React Awesome Reveal, React Tooltip, React Hot Toast
+
+## 4. Features
+
+- Navbar with conditional rendering based on authentication state (links, user menu, login/register)
+- Public pages: Home, Explore Artworks, 404 Not Found
+- Private pages (protected): Add Artwork, Artwork Details, My Gallery, My Favorites
+- Search and category filtering on Explore page
+- Like system with immediate UI update and backend persistence
+- Favorites system persisted in backend and displayed per-user
+- Update and delete modals for user-owned artworks
+- Theme toggle with `localStorage` persistence and initial hydration on app load
+- Loading spinners, skeleton loaders, and toast notifications for user feedback
+- Responsive layout and consistent Tailwind-based styling
+
+## 5. Project Structure
+
+Key folders and files (client):
+
+```
+assignment_10_client/
+├── public/
+│   └── _redirects
 ├── src/
-│   ├── components/
-│   │   ├── shared/
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   └── ThemeToggle.jsx
-│   │   └── PrivateRoute.jsx
-│   ├── context/
-│   │   ├── AuthContext.jsx     # Firebase authentication
-│   │   └── ThemeContext.jsx    # Theme management
-│   ├── firebase/
-│   │   └── firebase.config.js  # Firebase initialization
-│   ├── hooks/
-│   │   ├── useAuth.jsx
-│   │   └── useTheme.jsx
-│   ├── layouts/
-│   │   └── MainLayout.jsx      # Main layout with navbar + footer
-│   ├── pages/
-│   │   ├── Home.jsx
-│   │   ├── ExploreArtworks.jsx
-│   │   ├── AddArtwork.jsx      # Protected
-│   │   ├── MyGallery.jsx       # Protected
-│   │   ├── MyFavorites.jsx     # Protected
-│   │   ├── ArtworkDetails.jsx  # Protected
-│   │   ├── Login.jsx
-│   │   ├── Register.jsx
-│   │   └── NotFound.jsx
-│   ├── App.jsx                 # Route configuration
-│   ├── main.jsx               # App entry point
-│   └── index.css              # Global styles
-├── .env.local                 # Environment variables
-├── index.html
+│   ├── components/        # Reusable UI components and modals
+│   ├── context/           # AuthContext.jsx, ThemeContext.jsx
+│   ├── data/              # demo data files
+│   ├── firebase/          # firebase.config.js
+│   ├── hooks/             # useAuth.jsx, useTheme.jsx
+│   ├── layouts/           # MainLayout.jsx
+│   ├── pages/             # Public and private pages
+│   ├── services/          # api.js (Axios instance and helpers)
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
 ├── package.json
 ├── tailwind.config.js
-├── postcss.config.js
 └── vite.config.js
 ```
 
-## 📦 Installation
+## 6. Environment Variables
 
-```bash
-# Install dependencies
+Required client-side Vite variables (create `.env.local`):
+
+- `VITE_API_URL` — Base URL for the backend API (e.g., `https://api.example.com/api`)
+- `VITE_FIREBASE_API_KEY`
+- `VITE_FIREBASE_AUTH_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_STORAGE_BUCKET`
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`
+- `VITE_FIREBASE_APP_ID`
+
+Only variables prefixed with `VITE_` are exposed to the browser. Do not commit `.env` files.
+
+## 7. Installation and Setup
+
+1. Clone repository:
+
+```powershell
+git clone <repo-url>
+```
+
+2. Enter client directory:
+
+```powershell
+cd assignment_10_client
+```
+
+3. Install dependencies:
+
+```powershell
 npm install
+```
 
-# Create .env.local file (see below)
+4. Create `.env.local` and add the `VITE_` variables listed above.
 
-# Start development server
+5. Start the development server:
+
+```powershell
 npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
 ```
 
-## ⚙️ Environment Variables
+## 8. API Integration Notes
 
-Create a `.env.local` file in the root directory:
+- The client uses a configured Axios instance in `src/services/api.js` that uses `import.meta.env.VITE_API_URL` as the base URL.
+- Typical request patterns:
+  - List artworks: `GET ${VITE_API_URL}/artworks`
+  - Get artwork details: `GET ${VITE_API_URL}/artworks/:id`
+  - Create artwork: `POST ${VITE_API_URL}/artworks` (body contains artwork fields and user info)
+  - Update artwork: `PATCH ${VITE_API_URL}/artworks/:id`
+  - Delete artwork: `DELETE ${VITE_API_URL}/artworks/:id`
+  - Favorites: `POST ${VITE_API_URL}/favorites` and `DELETE ${VITE_API_URL}/favorites/:id`
+  - Likes: `PATCH ${VITE_API_URL}/artworks/:id/like` or similar endpoints depending on server routes
 
-```env
-VITE_API_URL=http://localhost:5000/api
+- Authentication and demo mode: The client authenticates users with Firebase and may attach tokens to requests. In demo/back-end setups the server may accept `userEmail` in the request body instead of validating Firebase tokens server-side — see Known Limitations.
 
-# Firebase Configuration
-VITE_FIREBASE_API_KEY=your_firebase_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_firebase_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
-VITE_FIREBASE_APP_ID=your_firebase_app_id
-```
+## 9. Private Route Protection
 
-Get Firebase credentials from [Firebase Console](https://console.firebase.google.com/)
+- Implementation: `PrivateRoute` (component) reads `user` and `loading` from `AuthContext` (`useAuth()` hook). While `loading` is true a spinner is shown; if `user` is null the route redirects to `/login`.
+- Behavior: Unauthenticated users are redirected to login and, upon successful login, are returned to the originally requested page when supported by the router state.
 
-## 🛣️ Routes
+## 10. Deployment Instructions (Vercel)
 
-### Public Routes
-- `/` - Home page
-- `/explore` - Explore all artworks
-- `/login` - Login page
-- `/register` - Register page
+1. Create/import the project in Vercel and connect the repository.
+2. Configure build settings:
+   - Framework preset: Vite (or leave default)
+   - Build command: `npm run build`
+   - Output directory: `dist`
+3. Add Vercel Environment Variables (`VITE_API_URL`, `VITE_FIREBASE_*`) under Project Settings → Environment Variables.
+4. Deploy. After the backend is deployed, update `VITE_API_URL` in Vercel to point to the backend production URL and redeploy.
 
-### Protected Routes (Require Authentication)
-- `/add-artwork` - Add new artwork
-- `/my-gallery` - User's own artworks
-- `/my-favorites` - User's favorited artworks
-- `/artworks/:id` - Artwork details page
+## 11. Known Limitations
 
-### Special Routes
-- `*` - 404 Not Found (no navbar/footer)
+- No Firebase Admin validation in demo mode: The backend may trust the client-provided `userEmail` rather than verifying Firebase ID tokens.
+- Likes and favorites may rely on client-provided email for scoping in demo setups.
+- Optimistic UI updates may lead to temporary inconsistencies if server requests fail.
 
-## 🎨 Features
+If you want, I can run a local production build and verify the client deploys successfully to Vercel.
 
-✅ **Firebase Authentication**
-- Email/Password authentication
-- Google Sign-In
-- Protected routes
-- User session management
+---
 
-✅ **Theme Toggle**
-- Light/Dark mode
-- Persistent theme preference (localStorage)
-- Smooth transitions
-
-✅ **Responsive Design**
-- Mobile-first approach
-- Tailwind CSS utilities
-- DaisyUI components
-
-✅ **React Router v6**
-- Client-side routing
-- Nested routes
-- Protected routes
-- 404 handling
-
-✅ **Context API**
-- AuthContext for authentication
-- ThemeContext for theme management
-
-✅ **Custom Hooks**
-- useAuth() - Access authentication
-- useTheme() - Access theme functions
-
-✅ **Toast Notifications**
-- Success/error messages
-- react-hot-toast integration
-
-## 🔐 Authentication Flow
-
-### Register
-1. User fills registration form
-2. Creates account with Firebase
-3. Updates profile with display name
-4. Redirects to home page
-
-### Login
-1. User enters email/password or uses Google
-2. Firebase authenticates
-3. User state updated in AuthContext
-4. Redirects to intended page or home
-
-### Protected Routes
-1. PrivateRoute checks authentication
-2. Shows loading spinner while checking
-3. Redirects to login if not authenticated
-4. Renders component if authenticated
-
-## 🎯 Using AuthContext
-
-```javascript
-import { useAuth } from '../hooks/useAuth'
-
-function MyComponent() {
-  const { user, loading, signIn, logOut, createUser, signInWithGoogle, getIdToken } = useAuth()
-
-  // Get Firebase token for API calls
-  const token = await getIdToken()
-
-  // Make authenticated API request
-  fetch('/api/artworks', {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  })
-}
-```
-
-## 🎨 Using ThemeContext
-
-```javascript
-import { useTheme } from '../hooks/useTheme'
-
-function MyComponent() {
-  const { theme, toggleTheme } = useTheme()
-
-  return (
-    <button onClick={toggleTheme}>
-      Current theme: {theme}
-    </button>
-  )
-}
-```
-
-## 🎨 Custom Tailwind Classes
-
-### Buttons
-```jsx
-<button className="btn-primary">Primary Button</button>
-<button className="btn-secondary">Secondary Button</button>
-<button className="btn-outline">Outline Button</button>
-```
-
-### Cards
-```jsx
-<div className="card card-hover">Card with hover effect</div>
-```
-
-### Inputs
-```jsx
-<input className="input-field" />
-<input className="input-field input-error" />
-```
-
-### Text
-```jsx
-<h1 className="gradient-text">Gradient Text</h1>
-```
-
-### Animations
-```jsx
-<div className="animate-fade-in">Fade in animation</div>
-<div className="animate-slide-in-left">Slide from left</div>
-<div className="animate-slide-in-right">Slide from right</div>
-```
-
-## 🚀 Deployment
-
-### Netlify
-
-1. Build command: `npm run build`
-2. Publish directory: `dist`
-3. Add environment variables in Netlify dashboard
-4. The `_redirects` file handles SPA routing
-
-### Vercel
-
-1. Import project from Git
-2. Build command: `npm run build`
-3. Output directory: `dist`
-4. Add environment variables
-
-### Firebase Hosting
-
-```bash
-npm run build
-firebase deploy
-```
-
-## 📝 Development Notes
-
-- CSS errors for `@tailwind` and `@apply` are expected (Tailwind directives)
-- Use `import.meta.env.VITE_*` for environment variables (Vite convention)
-- Firebase token automatically refreshes on API calls
-- Theme preference persists in localStorage
-- All forms include basic validation
-
-## 🔧 Available Scripts
-
-```bash
-npm run dev       # Start development server (http://localhost:5173)
-npm run build     # Build for production
-npm run preview   # Preview production build
-npm run lint      # Run ESLint
-```
-
-## 📚 Libraries Documentation
-
-- [React Router](https://reactrouter.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [DaisyUI](https://daisyui.com/)
-- [Firebase Auth](https://firebase.google.com/docs/auth)
-- [React Hot Toast](https://react-hot-toast.com/)
-- [React Awesome Reveal](https://www.npmjs.com/package/react-awesome-reveal)
-
-## 🐛 Troubleshooting
-
-**Firebase not initialized:**
-- Check .env.local file
-- Verify Firebase credentials
-- Restart dev server after adding env vars
-
-**Routes not working:**
-- Check React Router configuration
-- Verify _redirects file for deployment
-
-**Theme not persisting:**
-- Check localStorage in browser
-- Verify ThemeContext implementation
-
-## 📄 License
-
-MIT
+Replace the Vercel URL placeholder and add real `VITE_` values before deploying.
