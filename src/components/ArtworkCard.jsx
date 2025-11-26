@@ -112,7 +112,7 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
       {/* Content Section */}
       <div className="flex-1 p-4 flex flex-col">
         <h3 className="text-lg font-semibold text-slate-50 mb-1 truncate">{artwork.title}</h3>
-        <p className="text-sm text-slate-300 mt-1">By {artwork.artistName}</p>
+        <p className="text-sm text-slate-300 mt-1">By {artwork.userName || artwork.artistName || artwork.user || 'Unknown'}</p>
         <p className="text-sm text-slate-300">{artwork.category}</p>
       </div>
       {/* Actions Row */}

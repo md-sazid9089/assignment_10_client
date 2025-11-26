@@ -4,7 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
-import { getPublicArtworks } from '../services/api';
+import { getPublicArtworks, toggleLike } from '../services/api';
+import { useAuth } from '../hooks/useAuth';
 import { DUMMY_FEATURED_ARTWORKS } from '../data/dummyFeaturedArtworks';
 import ArtworkCard from '../components/ArtworkCard';
 import ArtworkDetailsModal from '../components/ArtworkDetailsModal';
@@ -114,7 +115,16 @@ const ExploreArtworks = () => {
     setSearchParams(params)
   }
 
-  const handleLike = (artworkId) => {
+  const { user } = useAuth();
+
+  const handleLike = async (artworkId, providedEmail) => {
+    const userEmail = providedEmail || user?.email;
+    if (!userEmail) {
+      toast.error('Please login to like artworks');
+      return;
+    }
+
+    // Optimistic update
     setArtworks(prevArtworks =>
       prevArtworks.map(artwork =>
         artwork._id === artworkId
@@ -122,6 +132,32 @@ const ExploreArtworks = () => {
           : artwork
       )
     );
+
+    try {
+      const res = await toggleLike(artworkId, userEmail);
+      // Expecting normalized response: { liked, likesCount, artwork }
+      const likesCount = res?.likesCount ?? res?.data?.likesCount ?? res?.count;
+      if (typeof likesCount === 'number') {
+        setArtworks(prevArtworks =>
+          prevArtworks.map(artwork =>
+            artwork._id === artworkId
+              ? { ...artwork, likesCount }
+              : artwork
+          )
+        );
+      }
+    } catch (err) {
+      // Revert optimistic update on error
+      setArtworks(prevArtworks =>
+        prevArtworks.map(artwork =>
+          artwork._id === artworkId
+            ? { ...artwork, likesCount: Math.max(0, (artwork.likesCount || 1) - 1) }
+            : artwork
+        )
+      );
+      console.error('Error toggling like from Explore:', err);
+      toast.error('Failed to update like');
+    }
   };
 
   const handleFavorite = (artworkId) => {

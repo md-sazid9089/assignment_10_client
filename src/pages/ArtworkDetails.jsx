@@ -88,11 +88,13 @@ const ArtworkDetails = () => {
     try {
       // Check like status
       const likeData = await checkLikeStatus(id, user.email)
-      setIsLiked(likeData.isLiked || false)
+      // server returns { success: true, liked: boolean }
+      setIsLiked((likeData && (likeData.liked ?? likeData.isLiked)) || false)
 
       // Check favorite status
       const favData = await checkFavoriteStatus(user.email, id)
-      setIsFavorited(favData.isFavorited || false)
+      // favorite endpoint returns { success: true, data: { isFavorited: boolean } }
+      setIsFavorited((favData && (favData.data?.isFavorited ?? favData.isFavorited)) || false)
     } catch (error) {
       if (error.response?.status === 404) {
         setIsLiked(false);

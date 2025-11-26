@@ -84,14 +84,24 @@ export const toggleLike = async (id, userEmail = null) => {
   // Send userEmail in the request body for demo-mode backends that rely on it.
   const data = userEmail ? { userEmail } : {}
   const response = await api.patch(`/artworks/${id}/like`, data)
-  // Normalize response: many endpoints wrap result in `data`.
+  // Normalize response to: { liked, likesCount, artwork }
   const payload = response.data || {}
-  return payload.data || payload
+  const dataPayload = payload.data || payload
+  return {
+    liked: dataPayload.liked ?? dataPayload.isLiked ?? false,
+    likesCount: dataPayload.likesCount ?? (dataPayload.artwork && dataPayload.artwork.likesCount) ?? null,
+    artwork: dataPayload.artwork ?? null,
+    success: payload.success ?? true
+  }
 }
 
 export const checkLikeStatus = async (id, email) => {
   const response = await api.get(`/artworks/${id}/is-liked/${email}`)
-  return response.data
+  const payload = response.data || {}
+  return {
+    liked: payload.liked ?? payload.data?.liked ?? false,
+    success: payload.success ?? !!payload.liked
+  }
 }
 
 export const getCategories = async () => {
@@ -116,12 +126,23 @@ export const removeFavorite = async (data) => {
 
 export const toggleFavorite = async (data) => {
   const response = await api.post('/favorites/toggle', data)
-  return response.data
+  const payload = response.data || {}
+  const dataPayload = payload.data || payload
+  return {
+    action: dataPayload.action ?? null,
+    isFavorited: dataPayload.isFavorited ?? dataPayload.isFavorited ?? false,
+    favorite: dataPayload.favorite ?? null,
+    success: payload.success ?? true
+  }
 }
 
 export const checkFavoriteStatus = async (userEmail, artworkId) => {
   const response = await api.get(`/favorites/check/${userEmail}/${artworkId}`)
-  return response.data
+  const payload = response.data || {}
+  return {
+    isFavorited: payload.data?.isFavorited ?? payload.isFavorited ?? false,
+    success: payload.success ?? !!payload.data?.isFavorited
+  }
 }
 
 export const getFavoriteIds = async (userEmail) => {
