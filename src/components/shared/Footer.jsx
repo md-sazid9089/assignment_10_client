@@ -122,14 +122,14 @@ const Footer = () => {
                   <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.606-2.665-.304-5.466-1.332-5.466-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23a11.52 11.52 0 013.003-.404c1.018.005 2.045.138 3.003.404 2.291-1.553 3.297-1.23 3.297-1.23.653 1.653.242 2.873.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.803 5.625-5.475 5.921.43.371.823 1.102.823 2.222v3.293c0 .322.218.694.825.576C20.565 21.796 24 17.297 24 12c0-6.63-5.37-12-12-12z"/>
                 </svg>
               </a>
-              <a href="#" 
+              <a href="https://github.com/md-sazid9089" target="_blank" rel="noopener noreferrer" 
                 className="btn btn-circle btn-sm bg-gray-200 dark:bg-gray-800 hover:bg-secondary hover:text-white dark:hover:bg-secondary hover:scale-110 transition-all border-0 shadow-md"
                 aria-label="Facebook">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
                 </svg>
               </a>
-              <a href="#" 
+              <a href="https://github.com/md-sazid9089" target="_blank" rel="noopener noreferrer" 
                 className="btn btn-circle btn-sm bg-gray-200 dark:bg-gray-800 hover:bg-accent hover:text-white dark:hover:bg-accent hover:scale-110 transition-all border-0 shadow-md" 
                 aria-label="X (Twitter)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">

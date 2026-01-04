@@ -15,8 +15,30 @@ const Login = () => {
     e.preventDefault()
     setLoading(true)
     try {
-      await signIn(email, password)
-      navigate(from, { replace: true })
+      const result = await signIn(email, password)
+      
+      // ADMIN PORTAL: Check if logging in user is admin123@gmail.com
+      // If yes, open admin portal in NEW WINDOW instead of regular navigation
+      if (email === 'admin123@gmail.com') {
+        // Open admin portal in a new window
+        const adminWindow = window.open(
+          '/admin-portal',
+          'AdminPortal',
+          'width=1400,height=900,menubar=no,toolbar=no,location=no,status=no'
+        )
+        
+        // Focus the new admin window
+        if (adminWindow) {
+          adminWindow.focus()
+        }
+        
+        // Keep current window on login page or redirect to home
+        // Admin works in separate window, main window stays accessible
+        navigate('/', { replace: true })
+      } else {
+        // Regular users: normal navigation flow
+        navigate(from, { replace: true })
+      }
     } catch (error) {
       console.error('Login error:', error)
     } finally {

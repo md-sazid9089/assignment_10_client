@@ -106,6 +106,19 @@ export const AuthProvider = ({ children }) => {
   // Observer for auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        // Add role property to user object
+        // Default role is 'user', can be set to 'admin' for admin users
+        
+        // Set default role as 'user'
+        currentUser.role = 'user'
+        
+        // ADMIN PORTAL: Set admin role for specific admin email
+        // When admin123@gmail.com logs in, they get admin role and admin portal opens
+        if (currentUser.email === 'admin123@gmail.com') {
+          currentUser.role = 'admin'
+        }
+      }
       setUser(currentUser)
       setLoading(false)
     })

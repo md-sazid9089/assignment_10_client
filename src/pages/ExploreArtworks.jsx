@@ -33,6 +33,14 @@ const ExploreArtworks = () => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [sortBy, setSortBy] = useState("recent");
 
+  // Read category from URL on mount
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get('category');
+    if (categoryFromUrl && CATEGORIES.includes(categoryFromUrl)) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [searchParams]);
+
   
   let filteredArtworks = artworks;
   if (selectedCategory === "Recent") {
