@@ -160,7 +160,7 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
             <Link to={`/artworks/${artwork._id}`}>
               <button
                 type="button"
-                className="px-4 py-2 rounded-xl border border-indigo-400 text-indigo-200 text-sm font-medium hover:bg-indigo-500/10 transition-colors"
+                className="px-4 py-2 rounded-xl border border-blue-400 dark:border-indigo-400 text-blue-600 dark:text-indigo-200 text-sm font-medium hover:bg-blue-500/10 dark:hover:bg-indigo-500/10 transition-colors"
                 title="View Details"
               >
                 View Details
@@ -174,7 +174,7 @@ const ArtworkCard = forwardRef(({ artwork, isFavorited = false, onToggleFavorite
             <button
               type="button"
               onClick={() => onEdit && onEdit(artwork)}
-              className="flex-1 px-3 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-500"
+              className="flex-1 px-3 py-2 rounded-xl bg-blue-600 dark:bg-indigo-600 text-white text-sm font-medium hover:bg-blue-500 dark:hover:bg-indigo-500"
             >
               Update
             </button>

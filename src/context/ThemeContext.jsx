@@ -12,13 +12,16 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const root = window.document.documentElement
     
-    
+    // Remove existing theme classes
     root.classList.remove('light', 'dark')
     
-    
+    // Add current theme class
     root.classList.add(theme)
     
+    // Set data-theme attribute for DaisyUI
+    root.setAttribute('data-theme', theme)
     
+    // Save to localStorage
     localStorage.setItem('artify-theme', theme)
   }, [theme])
 

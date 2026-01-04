@@ -52,8 +52,8 @@ const events = [
 ];
 
 const typeColors = {
-  Workshop: 'bg-indigo-500',
-  Exhibition: 'bg-pink-500',
+  Workshop: 'bg-blue-500 dark:bg-indigo-500',
+  Exhibition: 'bg-amber-500 dark:bg-pink-500',
   Online: 'bg-cyan-500',
   Meetup: 'bg-green-500',
 };

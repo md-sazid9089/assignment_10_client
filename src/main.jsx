@@ -17,22 +17,32 @@ createRoot(document.getElementById('root')).render(
             position="top-right"
             toastOptions={{
               duration: 3000,
+              className: '',
               style: {
-                background: '#363636',
-                color: '#fff',
+                background: 'rgb(31 41 55)',
+                color: 'rgb(243 244 246)',
+                border: '1px solid rgb(75 85 99)',
               },
               success: {
                 duration: 3000,
+                style: {
+                  background: 'rgb(16 185 129)',
+                  color: 'rgb(255 255 255)',
+                },
                 iconTheme: {
-                  primary: '#10b981',
-                  secondary: '#fff',
+                  primary: 'rgb(255 255 255)',
+                  secondary: 'rgb(16 185 129)',
                 },
               },
               error: {
                 duration: 4000,
+                style: {
+                  background: 'rgb(239 68 68)',
+                  color: 'rgb(255 255 255)',
+                },
                 iconTheme: {
-                  primary: '#ef4444',
-                  secondary: '#fff',
+                  primary: 'rgb(255 255 255)',
+                  secondary: 'rgb(239 68 68)',
                 },
               },
             }}

@@ -202,7 +202,7 @@ const ExploreArtworks = () => {
                 className={
                   "rounded-full px-3 py-1 border text-xs font-medium transition " +
                   (selectedCategory === cat
-                    ? "bg-purple-500 text-white border-purple-400 shadow-md"
+                    ? "bg-blue-500 dark:bg-purple-500 text-white border-blue-400 dark:border-purple-400 shadow-md"
                     : "bg-transparent text-slate-300 border-white/15 hover:bg-white/5")
                 }
               >
@@ -215,9 +215,9 @@ const ExploreArtworks = () => {
         
         {!loading && filteredArtworks.length > 0 && (
           <div className="mb-6 text-sm text-slate-400">
-            Showing <span className="font-semibold text-purple-400">{filteredArtworks.length}</span> artwork{filteredArtworks.length !== 1 ? 's' : ''}
+            Showing <span className="font-semibold text-blue-500 dark:text-purple-400">{filteredArtworks.length}</span> artwork{filteredArtworks.length !== 1 ? 's' : ''}
             {selectedCategory !== "All" && (
-              <span className="ml-1">in <span className="font-semibold text-purple-300">{selectedCategory}</span></span>
+              <span className="ml-1">in <span className="font-semibold text-cyan-500 dark:text-purple-300">{selectedCategory}</span></span>
             )}
           </div>
         )}

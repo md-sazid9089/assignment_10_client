@@ -59,7 +59,7 @@ const ArtistCard = ({ rank, name, initials, avatarUrl, totalArtworks, totalLikes
             <p>Artworks</p>
           </div>
           <div>
-            <p className="font-semibold text-pink-400">{totalLikes}</p>
+            <p className="font-semibold text-cyan-400 dark:text-pink-400">{totalLikes}</p>
             <p>Likes</p>
           </div>
         </div>
@@ -67,7 +67,7 @@ const ArtistCard = ({ rank, name, initials, avatarUrl, totalArtworks, totalLikes
       <div className="px-5 pb-4">
         <button
           type="button"
-          className="w-full px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-500 transition-colors"
+          className="w-full px-4 py-2 rounded-xl bg-blue-600 dark:bg-indigo-600 text-white text-sm font-medium hover:bg-blue-500 dark:hover:bg-indigo-500 transition-colors"
         >
           View Profile
         </button>

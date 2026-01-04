@@ -45,7 +45,7 @@ const AddArtwork = () => {
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <span className="text-lg text-slate-400 mb-4">You must be logged in to add artwork.</span>
         <button
-          className="px-5 py-2 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white font-semibold shadow-lg"
+          className="px-5 py-2 rounded-full bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 dark:from-purple-500 dark:via-pink-500 dark:to-orange-400 text-white font-semibold shadow-lg"
           onClick={() => navigate("/login")}
         >
           Go to Login
@@ -111,7 +111,7 @@ const AddArtwork = () => {
   return (
     <div className="min-h-screen bg-[#050818] flex items-center justify-center py-16 px-2">
       <div className="max-w-3xl w-full mx-auto rounded-3xl bg-[#070b1b]/90 border border-white/10 backdrop-blur-md shadow-[0_24px_80px_rgba(0,0,0,0.85)] p-8 text-slate-50">
-        <h1 className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-orange-400">Add New Artwork</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 dark:from-purple-400 dark:via-pink-500 dark:to-orange-400">Add New Artwork</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Image URL */}
           <div>
@@ -267,7 +267,7 @@ const AddArtwork = () => {
           <div className="pt-2">
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 px-6 py-2.5 text-sm font-bold text-white shadow-lg hover:brightness-110 transition disabled:opacity-60 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 dark:from-purple-500 dark:via-pink-500 dark:to-orange-400 px-6 py-2.5 text-sm font-bold text-white shadow-lg hover:brightness-110 transition disabled:opacity-60 disabled:cursor-not-allowed"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Uploading..." : "Upload Artwork"}
