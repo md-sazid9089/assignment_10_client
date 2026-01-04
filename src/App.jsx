@@ -8,6 +8,7 @@ import MyFavorites from './pages/MyFavorites'
 import ArtworkDetails from './pages/ArtworkDetails'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Contact from './pages/Contact'
 import NotFound from './pages/NotFound'
 import ThemeAnimationDemo from './pages/ThemeAnimationDemo'
 import PrivateRoute from './components/PrivateRoute'
@@ -19,6 +20,7 @@ function App() {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="explore" element={<ExploreArtworks />} />
+        <Route path="contact" element={<Contact />} />
         <Route path="demo" element={<ThemeAnimationDemo />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />

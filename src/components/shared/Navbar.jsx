@@ -43,6 +43,16 @@ const Navbar = () => {
           Explore
         </NavLink>
       </li>
+      <li>
+        <NavLink 
+          to="/contact" 
+          className={({ isActive }) => 
+            isActive ? 'font-semibold text-primary border-b-2 border-primary pb-1' : 'text-gray-700 dark:text-gray-300 hover:text-primary transition-colors'
+          }
+        >
+          Contact
+        </NavLink>
+      </li>
       
     </>
   )

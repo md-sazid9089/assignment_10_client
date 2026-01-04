@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,6 +31,7 @@ const ExploreArtworks = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [sortBy, setSortBy] = useState("recent");
 
   
   let filteredArtworks = artworks;
@@ -59,27 +59,22 @@ const ExploreArtworks = () => {
     });
   }
 
+  // Apply sorting
+  if (sortBy === "recent") {
+    filteredArtworks = [...filteredArtworks].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } else if (sortBy === "oldest") {
+    filteredArtworks = [...filteredArtworks].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  } else if (sortBy === "mostLiked") {
+    filteredArtworks = [...filteredArtworks].sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0));
+  } else if (sortBy === "titleAsc") {
+    filteredArtworks = [...filteredArtworks].sort((a, b) => a.title.localeCompare(b.title));
+  } else if (sortBy === "titleDesc") {
+    filteredArtworks = [...filteredArtworks].sort((a, b) => b.title.localeCompare(a.title));
+  }
+
   useEffect(() => {
     fetchArtworks();
   }, []);
-
-  useEffect(() => {
-    if (!cardsRef.current.length) return;
-    gsap.from(cardsRef.current, {
-      opacity: 0,
-      y: 40,
-      duration: 0.6,
-      stagger: 0.12,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '#explore-grid',
-        start: 'top 80%',
-      },
-      onComplete: () => {
-        gsap.set(cardsRef.current, { opacity: 1 });
-      }
-    });
-  }, [artworks]);
 
   const fetchArtworks = async () => {
     setLoading(true);
@@ -103,14 +98,6 @@ const ExploreArtworks = () => {
       setLoading(false);
     }
   };
-
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters)
-    const params = {}
-    if (newFilters.search) params.search = newFilters.search
-    if (newFilters.category) params.category = newFilters.category
-    setSearchParams(params)
-  }
 
   const { user } = useAuth();
 
@@ -189,24 +176,41 @@ const ExploreArtworks = () => {
               className="w-full rounded-full px-4 py-2 bg-[#181c2a] text-slate-200 border border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
-          <div className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="text-slate-400 mr-2">Filter by category:</span>
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setSelectedCategory(cat)}
-                className={
-                  "rounded-full px-3 py-1 border text-xs font-medium transition " +
-                  (selectedCategory === cat
-                    ? "bg-blue-500 dark:bg-purple-500 text-white border-blue-400 dark:border-purple-400 shadow-md"
-                    : "bg-transparent text-slate-300 border-white/15 hover:bg-white/5")
-                }
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="relative">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="appearance-none rounded-full px-4 py-2 pr-10 bg-[#181c2a] text-slate-200 border border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
+            >
+              <option value="recent">Most Recent</option>
+              <option value="oldest">Oldest First</option>
+              <option value="mostLiked">Most Liked</option>
+              <option value="titleAsc">Title (A-Z)</option>
+              <option value="titleDesc">Title (Z-A)</option>
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 text-sm mb-6">
+          <span className="text-slate-400 mr-2">Filter by category:</span>
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setSelectedCategory(cat)}
+              className={
+                "rounded-full px-3 py-1 border text-xs font-medium transition " +
+                (selectedCategory === cat
+                  ? "bg-blue-500 dark:bg-purple-500 text-white border-blue-400 dark:border-purple-400 shadow-md"
+                  : "bg-transparent text-slate-300 border-white/15 hover:bg-white/5")
+              }
+            >
+              {cat}
+            </button>
+          ))}
         </div>
 
         

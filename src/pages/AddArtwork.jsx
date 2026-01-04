@@ -96,13 +96,11 @@ const AddArtwork = () => {
         setTimeout(() => {
           navigate("/explore");
         }, 1200);
-      } else {
-        setError(data?.message || "Failed to upload artwork.");
-        toast.error(data?.message || "Failed to upload artwork.");
       }
     } catch (err) {
-      setError(err.message || "Something went wrong.");
-      toast.error(err.message || "Something went wrong.");
+      const errorMessage = err.response?.data?.message || err.message || "Something went wrong.";
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

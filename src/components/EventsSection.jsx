@@ -75,7 +75,6 @@ const EventsSection = () => {
         },
       }
     );
-    console.log('EventsSection rendered:', events.length, 'events');
   }, []);
 
   return (
