@@ -61,9 +61,10 @@ const AdminPortalOverview = () => {
       console.log('✅ Token acquired successfully');
       
       // Fetch all artworks from API
-      console.log('📡 Calling API:', `${import.meta.env.VITE_API_URL}/artworks`);
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://assignment10-server-sage-iota.vercel.app/api';
+      console.log('📡 Calling API:', `${apiUrl}/artworks`);
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/artworks`,
+        `${apiUrl}/artworks`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

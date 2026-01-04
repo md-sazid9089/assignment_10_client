@@ -26,9 +26,10 @@ const AdminPortalUsers = () => {
     try {
       setLoading(true);
       const token = await user.getIdToken();
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://assignment10-server-sage-iota.vercel.app/api';
       console.log('📡 API Call: GET /artworks (for user stats)');
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/artworks`,
+        `${apiUrl}/artworks`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

@@ -30,9 +30,10 @@ const AdminPortalArtworks = () => {
     try {
       setLoading(true);
       const token = await user.getIdToken();
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://assignment10-server-sage-iota.vercel.app/api';
       console.log('📡 API Call: GET /artworks');
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/artworks`,
+        `${apiUrl}/artworks`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       console.log('✅ Fetched', response.data.length, 'artworks');
@@ -82,9 +83,10 @@ const AdminPortalArtworks = () => {
       console.log('✅ Delete confirmed by admin');
       try {
         const token = await user.getIdToken();
+        const apiUrl = import.meta.env.VITE_API_URL || 'https://assignment10-server-sage-iota.vercel.app/api';
         console.log('📡 API Call: DELETE /artworks/' + artworkId);
         await axios.delete(
-          `${import.meta.env.VITE_API_URL}/artworks/${artworkId}`,
+          `${apiUrl}/artworks/${artworkId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         console.log('✅ Artwork deleted successfully');
