@@ -35,8 +35,8 @@ const AdminPortalStatistics = () => {
         `${apiUrl}/artworks`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log('✅ Fetched', response.data.length, 'artworks for statistical analysis');
-      setArtworks(response.data);
+      console.log('✅ Fetched', response.data.count || response.data.length, 'artworks for statistical analysis');
+      setArtworks(response.data.data || response.data);
       console.log('📊 Statistics calculated successfully');
     } catch (error) {
       console.error('❌ Error fetching statistics:', error);

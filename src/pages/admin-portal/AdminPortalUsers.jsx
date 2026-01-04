@@ -33,11 +33,12 @@ const AdminPortalUsers = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      console.log('✅ Processing', response.data.length, 'artworks to generate user stats');
+      console.log('✅ Processing', response.data.count || response.data.length, 'artworks to generate user stats');
 
       // Group by user
       const userStats = {};
-      response.data.forEach(artwork => {
+      const artworks = response.data.data || response.data;
+      artworks.forEach(artwork => {
         const userId = artwork.userId;
         if (!userStats[userId]) {
           userStats[userId] = {

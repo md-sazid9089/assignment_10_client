@@ -68,9 +68,9 @@ const AdminPortalOverview = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      console.log('✅ API Response received:', response.data.length, 'artworks');
+      console.log('✅ API Response received:', response.data.count, 'artworks');
 
-      const artworks = response.data;
+      const artworks = response.data.data || response.data;
       const uniqueUsers = new Set(artworks.map(art => art.userId)).size;
       const totalLikes = artworks.reduce((sum, art) => sum + (art.likes || 0), 0);
       const totalViews = artworks.reduce((sum, art) => sum + (art.views || 0), 0);

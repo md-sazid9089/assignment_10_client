@@ -36,8 +36,8 @@ const AdminPortalArtworks = () => {
         `${apiUrl}/artworks`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log('✅ Fetched', response.data.length, 'artworks');
-      setArtworks(response.data);
+      console.log('✅ Fetched', response.data.count || response.data.length, 'artworks');
+      setArtworks(response.data.data || response.data);
     } catch (error) {
       console.error('❌ Error fetching artworks:', error);
       console.error('Error details:', {
