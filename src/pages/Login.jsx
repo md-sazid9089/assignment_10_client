@@ -25,45 +25,41 @@ const Login = () => {
       console.log('✅ Firebase authentication successful:', result.user.email)
       
       // ADMIN PORTAL: Check if logging in user is admin123@gmail.com
-      // If yes, open admin portal in NEW WINDOW instead of regular navigation
+      // If yes, open admin portal in NEW TAB instead of regular navigation
       if (email === 'admin123@gmail.com') {
-        console.log('🔑 Admin user detected! Opening Admin Portal in new window...')
+        console.log('🔑 Admin user detected! Opening Admin Portal in new tab...')
         console.log('📋 Admin credentials verified:', { email: 'admin123@gmail.com', role: 'admin' })
         
-        // Try to open admin portal in a new window
+        // Try to open admin portal in a new tab
         try {
-          const adminWindow = window.open(
-            '/admin-portal',
-            'AdminPortal',
-            'width=1400,height=900,menubar=no,toolbar=no,location=no,status=no'
-          )
+          const adminTab = window.open('/admin-portal', '_blank')
           
           // Check if window.open was successful (not blocked by popup blocker)
-          if (adminWindow) {
-            console.log('✅ Admin portal window opened successfully')
-            adminWindow.focus()
+          if (adminTab) {
+            console.log('✅ Admin portal tab opened successfully')
+            adminTab.focus()
             
             // Show success alert to admin
-            alert('✅ Admin Portal Opened!\n\nAdmin dashboard has been opened in a new window.\nYou can manage all artworks, users, and view platform statistics.')
+            alert('✅ Admin Portal Opened!\n\nAdmin dashboard has been opened in a new tab.\nYou can manage all artworks, users, and view platform statistics.')
             
             // Keep current window on home page
-            // Admin works in separate window, main window stays accessible
+            // Admin works in separate tab, main tab stays accessible
             navigate('/', { replace: true })
           } else {
             // Window.open returned null - likely blocked by popup blocker
-            console.error('❌ Failed to open admin portal window - popup blocked')
-            alert('⚠️ Popup Blocked!\n\nYour browser blocked the admin portal window.\n\nPlease allow popups for this site and try again.\n\nAlternatively, navigate to /admin-portal manually.')
+            console.error('❌ Failed to open admin portal tab - popup blocked')
+            alert('⚠️ Popup Blocked!\n\nYour browser blocked the admin portal tab.\n\nPlease allow popups for this site and try again.\n\nAlternatively, navigate to /admin-portal manually.')
             
-            // Fallback: navigate to admin portal in same window
-            console.log('🔄 Fallback: Navigating to admin portal in same window')
+            // Fallback: navigate to admin portal in same tab
+            console.log('🔄 Fallback: Navigating to admin portal in same tab')
             navigate('/admin-portal', { replace: true })
           }
-        } catch (windowError) {
+        } catch (tabError) {
           // Error occurred during window.open
-          console.error('❌ Error opening admin portal window:', windowError)
-          alert('❌ Error Opening Admin Portal\n\nFailed to open admin window: ' + windowError.message + '\n\nNavigating to admin portal in this window instead.')
+          console.error('❌ Error opening admin portal tab:', tabError)
+          alert('❌ Error Opening Admin Portal\n\nFailed to open admin tab: ' + tabError.message + '\n\nNavigating to admin portal in this tab instead.')
           
-          // Fallback: navigate to admin portal in same window
+          // Fallback: navigate to admin portal in same tab
           navigate('/admin-portal', { replace: true })
         }
       } else {
