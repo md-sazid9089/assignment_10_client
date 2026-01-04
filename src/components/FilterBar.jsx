@@ -49,20 +49,20 @@ const FilterBar = ({ onFilterChange, currentFilters }) => {
   const hasActiveFilters = searchTerm || selectedCategory
 
   return (
-    <div className="bg-base-200 rounded-lg shadow-lg p-6 space-y-6">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 space-y-6">
       {/* Search Bar */}
       <div>
         <label className="label">
-          <span className="label-text font-semibold">Search Artworks</span>
+          <span className="label-text font-semibold text-lg text-gray-700 dark:text-gray-300">Search Artworks</span>
         </label>
-        <form onSubmit={handleSearchSubmit} className="flex gap-2">
+        <form onSubmit={handleSearchSubmit} className="flex gap-3">
           <div className="flex-1 relative">
             <input
               type="text"
               value={searchTerm}
               onChange={handleSearchChange}
-              placeholder="Search by title, description, artist name, or medium..."
-              className="input input-bordered w-full pl-10"
+              placeholder="Search by title, artist, or description..."
+              className="input input-bordered w-full pl-12 h-12 text-base"
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"

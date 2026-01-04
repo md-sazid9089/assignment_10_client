@@ -37,16 +37,16 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-12 bg-black">
-      <div className="card max-w-md w-full p-8 animate-fade-in">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold gradient-text mb-2">Welcome Back</h1>
-          <p className="text-gray-600 dark:text-gray-400">Sign in to your account</p>
+    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black">
+      <div className="card max-w-md w-full p-10 shadow-2xl animate-fade-in bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div className="text-center mb-10">
+          <h1 className="text-5xl font-bold gradient-text mb-3">Welcome Back</h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">Sign in to continue to ARTIFY</p>
         </div>
 
-        <form onSubmit={handleEmailLogin} className="space-y-4">
+        <form onSubmit={handleEmailLogin} className="space-y-6">
           <div>
-            <label className="block text-sm font-semibold mb-2">Email</label>
+            <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Email Address</label>
             <input
               type="email"
               placeholder="your@email.com"

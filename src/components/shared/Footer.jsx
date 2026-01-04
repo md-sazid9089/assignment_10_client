@@ -4,8 +4,8 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-black text-slate-100">
-      <div className="container-custom py-10">
+    <footer className="bg-gradient-to-br from-gray-900 to-black dark:from-black dark:to-gray-900 text-slate-100 border-t border-gray-800">
+      <div className="container-custom py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           
           <div>
@@ -19,8 +19,8 @@ const Footer = () => {
 
           
           <div>
-            <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
-            <ul className="space-y-2">
+            <h4 className="font-semibold text-lg mb-6 text-gray-200">Quick Links</h4>
+            <ul className="space-y-3">
               <li>
                 <Link to="/" className="hover:text-primary transition-colors">
                   Home

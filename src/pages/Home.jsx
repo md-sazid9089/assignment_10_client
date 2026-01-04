@@ -355,8 +355,130 @@ const Home = () => {
           </div>
         </section>
       )}
-    {/* Upcoming Events Section at the very bottom */}
-    <EventsSection />
+
+      {/* Upcoming Events Section at the very bottom */}
+      <EventsSection />
+
+      {/* ARTIFY History Section */}
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-black">
+        <div className="container mx-auto px-4">
+          <Fade>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-4">Our Story</h2>
+              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                A journey of creativity, passion, and artistic excellence
+              </p>
+            </div>
+          </Fade>
+
+          <div className="max-w-5xl mx-auto">
+            <Slide direction="left">
+              <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <div className="order-2 md:order-1">
+                  <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50 mb-4">
+                    Founded in 2020
+                  </h3>
+                  <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                    ARTIFY was born from a simple idea: to create a global platform where artists could share their work, 
+                    connect with fellow creatives, and inspire art enthusiasts worldwide.
+                  </p>
+                  <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                    What started as a small community of 50 artists has grown into a vibrant ecosystem of thousands 
+                    of creators from over 50 countries, each bringing their unique perspective and style.
+                  </p>
+                </div>
+                <div className="order-1 md:order-2">
+                  <div className="relative">
+                    <img 
+                      src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&h=400&fit=crop" 
+                      alt="Art Gallery" 
+                      className="rounded-2xl shadow-2xl w-full h-80 object-cover"
+                    />
+                    <div className="absolute -bottom-6 -left-6 bg-primary text-white px-8 py-4 rounded-xl shadow-xl">
+                      <p className="text-4xl font-bold">2020</p>
+                      <p className="text-sm">Founded</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Slide>
+
+            <Slide direction="right">
+              <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                  <div className="relative">
+                    <img 
+                      src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&h=400&fit=crop" 
+                      alt="Artists Community" 
+                      className="rounded-2xl shadow-2xl w-full h-80 object-cover"
+                    />
+                    <div className="absolute -bottom-6 -right-6 bg-secondary text-white px-8 py-4 rounded-xl shadow-xl">
+                      <p className="text-4xl font-bold">50+</p>
+                      <p className="text-sm">Countries</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50 mb-4">
+                    Global Community
+                  </h3>
+                  <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                    Our mission has always been clear: to democratize art and make it accessible to everyone. 
+                    We believe that every artist deserves a platform to showcase their talent, regardless of their background.
+                  </p>
+                  <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                    Through innovative features, artist-friendly tools, and a supportive community, 
+                    we've helped thousands of creators turn their passion into a profession.
+                  </p>
+                </div>
+              </div>
+            </Slide>
+
+            <Fade delay={200}>
+              <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-10 text-white text-center shadow-2xl">
+                <h3 className="text-3xl font-bold mb-6">Milestones That Matter</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                  <div>
+                    <p className="text-5xl font-bold mb-2">2.5K+</p>
+                    <p className="text-sm opacity-90">Artworks</p>
+                  </div>
+                  <div>
+                    <p className="text-5xl font-bold mb-2">1.2K+</p>
+                    <p className="text-sm opacity-90">Artists</p>
+                  </div>
+                  <div>
+                    <p className="text-5xl font-bold mb-2">15K+</p>
+                    <p className="text-sm opacity-90">Likes</p>
+                  </div>
+                  <div>
+                    <p className="text-5xl font-bold mb-2">100+</p>
+                    <p className="text-sm opacity-90">Events</p>
+                  </div>
+                </div>
+              </div>
+            </Fade>
+
+            <Zoom delay={400}>
+              <div className="mt-16 text-center">
+                <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50 mb-6">
+                  Our Vision for the Future
+                </h3>
+                <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+                  As we continue to grow, our commitment remains unchanged: to provide the best platform for artists 
+                  to thrive, connect, and inspire. We're constantly innovating, adding new features, and listening 
+                  to our community to build the future of digital art together.
+                </p>
+                <Link to="/explore" className="btn btn-primary btn-lg">
+                  Explore Our Collection
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+              </div>
+            </Zoom>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

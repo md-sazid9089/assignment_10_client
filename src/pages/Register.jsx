@@ -53,16 +53,16 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-12 bg-black">
-      <div className="card max-w-md w-full p-8 animate-fade-in">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold gradient-text mb-2">Join ARTIFY</h1>
-          <p className="text-gray-600 dark:text-gray-400">Create your account to start sharing</p>
+    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black">
+      <div className="card max-w-md w-full p-10 shadow-2xl animate-fade-in bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div className="text-center mb-10">
+          <h1 className="text-5xl font-bold gradient-text mb-3">Join ARTIFY</h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">Create your account to start sharing your art</p>
         </div>
 
-        <form onSubmit={handleRegister} className="space-y-4">
+        <form onSubmit={handleRegister} className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold mb-2">Full Name</label>
+            <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Full Name</label>
             <input
               type="text"
               placeholder="input name"
@@ -74,7 +74,7 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-2">Email</label>
+            <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Email Address</label>
             <input
               type="email"
               placeholder="your@email.com"
@@ -86,7 +86,7 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-2">Photo URL</label>
+            <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Photo URL (Optional)</label>
             <input
               type="url"
               placeholder="https://your-photo-url.com"
@@ -97,7 +97,7 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-2">Password</label>
+            <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Password</label>
             <input
               type="password"
               placeholder="••••••••"

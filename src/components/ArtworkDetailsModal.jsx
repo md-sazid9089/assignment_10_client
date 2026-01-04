@@ -1,11 +1,32 @@
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ArtworkDetailsModal = ({ artwork, onClose }) => {
   if (!artwork) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div className="relative w-full max-w-xl rounded-3xl bg-[#070b1b] border border-white/10 shadow-2xl p-6 text-slate-100">
-        
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="relative w-full max-w-xl rounded-3xl bg-[#070b1b] border border-white/10 shadow-2xl p-6 text-slate-100"
+        initial={{ scale: 0.8, y: 50, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.8, y: 50, opacity: 0 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={0.2}
+        onDragEnd={(e, { offset, velocity }) => {
+          if (Math.abs(offset.y) > 100 || Math.abs(velocity.y) > 500) {
+            onClose();
+          }
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-slate-300 hover:text-white text-xl font-bold"
@@ -56,8 +77,8 @@ const ArtworkDetailsModal = ({ artwork, onClose }) => {
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

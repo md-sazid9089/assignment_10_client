@@ -1,9 +1,7 @@
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-gsap.registerPlugin(ScrollTrigger);
+import { motion, AnimatePresence } from 'framer-motion';
 import { getPublicArtworks, toggleLike } from '../services/api';
 import { useAuth } from '../hooks/useAuth';
 import { DUMMY_FEATURED_ARTWORKS } from '../data/dummyFeaturedArtworks';
@@ -32,7 +30,6 @@ const ExploreArtworks = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
-  const cardsRef = useRef([]);
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
@@ -227,20 +224,36 @@ const ExploreArtworks = () => {
 
         
         {!loading && filteredArtworks.length > 0 && (
-          <div
+          <motion.div
             id="explore-grid"
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
           >
             {filteredArtworks.map((art, index) => (
-              <ArtworkCard
+              <motion.div
                 key={art._id}
-                artwork={art}
-                onLike={handleLike}
-                onFavorite={handleFavorite}
-                ref={(el) => (cardsRef.current[index] = el)}
-              />
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+              >
+                <ArtworkCard
+                  artwork={art}
+                  onLike={handleLike}
+                  onFavorite={handleFavorite}
+                />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
 
         
