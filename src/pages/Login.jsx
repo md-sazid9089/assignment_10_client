@@ -14,35 +14,89 @@ const Login = () => {
   const handleEmailLogin = async (e) => {
     e.preventDefault()
     setLoading(true)
+    
+    // Log login attempt for debugging
+    console.log('🔐 Login attempt:', { email, timestamp: new Date().toISOString() })
+    
     try {
+      // Attempt to sign in with Firebase
+      console.log('📡 Calling Firebase signIn...')
       const result = await signIn(email, password)
+      console.log('✅ Firebase authentication successful:', result.user.email)
       
       // ADMIN PORTAL: Check if logging in user is admin123@gmail.com
       // If yes, open admin portal in NEW WINDOW instead of regular navigation
       if (email === 'admin123@gmail.com') {
-        // Open admin portal in a new window
-        const adminWindow = window.open(
-          '/admin-portal',
-          'AdminPortal',
-          'width=1400,height=900,menubar=no,toolbar=no,location=no,status=no'
-        )
+        console.log('🔑 Admin user detected! Opening Admin Portal in new window...')
+        console.log('📋 Admin credentials verified:', { email: 'admin123@gmail.com', role: 'admin' })
         
-        // Focus the new admin window
-        if (adminWindow) {
-          adminWindow.focus()
+        // Try to open admin portal in a new window
+        try {
+          const adminWindow = window.open(
+            '/admin-portal',
+            'AdminPortal',
+            'width=1400,height=900,menubar=no,toolbar=no,location=no,status=no'
+          )
+          
+          // Check if window.open was successful (not blocked by popup blocker)
+          if (adminWindow) {
+            console.log('✅ Admin portal window opened successfully')
+            adminWindow.focus()
+            
+            // Show success alert to admin
+            alert('✅ Admin Portal Opened!\n\nAdmin dashboard has been opened in a new window.\nYou can manage all artworks, users, and view platform statistics.')
+            
+            // Keep current window on home page
+            // Admin works in separate window, main window stays accessible
+            navigate('/', { replace: true })
+          } else {
+            // Window.open returned null - likely blocked by popup blocker
+            console.error('❌ Failed to open admin portal window - popup blocked')
+            alert('⚠️ Popup Blocked!\n\nYour browser blocked the admin portal window.\n\nPlease allow popups for this site and try again.\n\nAlternatively, navigate to /admin-portal manually.')
+            
+            // Fallback: navigate to admin portal in same window
+            console.log('🔄 Fallback: Navigating to admin portal in same window')
+            navigate('/admin-portal', { replace: true })
+          }
+        } catch (windowError) {
+          // Error occurred during window.open
+          console.error('❌ Error opening admin portal window:', windowError)
+          alert('❌ Error Opening Admin Portal\n\nFailed to open admin window: ' + windowError.message + '\n\nNavigating to admin portal in this window instead.')
+          
+          // Fallback: navigate to admin portal in same window
+          navigate('/admin-portal', { replace: true })
         }
-        
-        // Keep current window on login page or redirect to home
-        // Admin works in separate window, main window stays accessible
-        navigate('/', { replace: true })
       } else {
         // Regular users: normal navigation flow
+        console.log('👤 Regular user login successful, redirecting to:', from)
         navigate(from, { replace: true })
       }
     } catch (error) {
-      console.error('Login error:', error)
+      // Login failed - handle different error types
+      console.error('❌ Login failed:', error)
+      console.error('Error code:', error.code)
+      console.error('Error message:', error.message)
+      
+      // Provide user-friendly error messages
+      let errorMessage = 'Login failed. Please try again.'
+      
+      if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
+        errorMessage = '❌ Invalid Credentials\n\nThe email or password you entered is incorrect.\n\nFor admin access, use:\nEmail: admin123@gmail.com\nPassword: admin@123'
+      } else if (error.code === 'auth/user-not-found') {
+        errorMessage = '❌ User Not Found\n\nNo account exists with this email address.\n\nPlease register first or check your email.'
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = '❌ Invalid Email\n\nPlease enter a valid email address.'
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = '❌ Network Error\n\nPlease check your internet connection and try again.'
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = '❌ Too Many Attempts\n\nAccount temporarily locked due to too many failed login attempts.\n\nPlease try again later.'
+      }
+      
+      // Show error alert
+      alert(errorMessage)
     } finally {
       setLoading(false)
+      console.log('🔓 Login process completed, loading state reset')
     }
   }
 

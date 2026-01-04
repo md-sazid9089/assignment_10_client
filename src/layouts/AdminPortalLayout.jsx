@@ -19,14 +19,48 @@ import { useAuth } from '../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const AdminPortalLayout = () => {
-  const { user, logOut } = useAuth();
+  const { user, logOut, loading } = useAuth();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
+  // Log admin portal access attempt for debugging
+  console.log('🔐 Admin Portal Layout Mounted');
+  console.log('📊 Auth State:', { 
+    user: user?.email, 
+    role: user?.role, 
+    loading,
+    timestamp: new Date().toISOString() 
+  });
+
+  // Show loading state while checking auth
+  if (loading) {
+    console.log('⏳ Waiting for auth state to load...');
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400 text-lg font-semibold">
+            Loading Admin Portal...
+          </p>
+          <p className="text-gray-500 dark:text-gray-500 text-sm mt-2">
+            Verifying administrator credentials
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // SECURITY: Only allow admin123@gmail.com to access this layout
   // Redirect any non-admin user who somehow reaches this route
   if (!user || user.email !== 'admin123@gmail.com') {
+    console.error('❌ UNAUTHORIZED ACCESS ATTEMPT to Admin Portal');
+    console.error('📧 User email:', user?.email || 'Not logged in');
+    console.error('🚫 Access denied - admin portal is restricted to admin123@gmail.com only');
+    
+    // Alert the user
+    alert('❌ Access Denied\n\nYou do not have permission to access the Admin Portal.\n\nOnly authorized administrators can access this area.\n\nUser: ' + (user?.email || 'Not logged in'));
+    
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="max-w-md w-full text-center p-8">
@@ -64,11 +98,16 @@ const AdminPortalLayout = () => {
 
   // Handle logout - close admin window
   const handleLogout = async () => {
+    console.log('🚪 Admin logout initiated');
     try {
       await logOut();
+      console.log('✅ Logout successful, closing admin portal window');
+      alert('✅ Logged Out\n\nYou have been successfully logged out.\n\nAdmin portal window will close now.');
       window.close(); // Close admin portal window
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('❌ Logout error:', error);
+      console.error('Error details:', error.message);
+      alert('❌ Logout Error\n\nFailed to log out: ' + error.message + '\n\nPlease try again.');
     }
   };
 

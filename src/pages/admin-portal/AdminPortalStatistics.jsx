@@ -20,22 +20,46 @@ const AdminPortalStatistics = () => {
   const [artworks, setArtworks] = useState([]);
 
   useEffect(() => {
+    console.log('📈 Admin Statistics Page: Initializing...');
     fetchStatistics();
   }, []);
 
   const fetchStatistics = async () => {
+    console.log('🔄 Fetching platform statistics...');
     try {
       setLoading(true);
       const token = await user.getIdToken();
+      console.log('📡 API Call: GET /artworks (for statistics)');
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/artworks`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      console.log('✅ Fetched', response.data.length, 'artworks for statistical analysis');
       setArtworks(response.data);
+      console.log('📊 Statistics calculated successfully');
     } catch (error) {
-      console.error('Error fetching statistics:', error);
+      console.error('❌ Error fetching statistics:', error);
+      console.error('Error details:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data
+      });
+      
+      let errorMsg = 'Failed to load platform statistics.\n\n';
+      if (error.code === 'ERR_NETWORK') {
+        errorMsg += 'Network Error: Cannot connect to server.\nPlease ensure the backend is running on port 5000.';
+      } else if (error.response?.status === 401) {
+        errorMsg += 'Authentication Error: Session expired.\nPlease log in again.';
+      } else if (error.response?.status === 500) {
+        errorMsg += 'Server Error: Database connection failed.\nCheck server logs for details.';
+      } else {
+        errorMsg += error.message || 'Unknown error occurred.';
+      }
+      
+      alert('❌ Statistics Loading Failed\n\n' + errorMsg + '\n\nCheck console for detailed logs.');
     } finally {
       setLoading(false);
+      console.log('🏁 Statistics loading completed');
     }
   };
 

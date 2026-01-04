@@ -21,27 +21,53 @@ const AdminPortalArtworks = () => {
   const [sortBy, setSortBy] = useState('recent');
 
   useEffect(() => {
+    console.log('🎨 Admin Artworks Page: Initializing...');
     fetchAllArtworks();
   }, []);
 
   const fetchAllArtworks = async () => {
+    console.log('🔄 Fetching all artworks for admin moderation...');
     try {
       setLoading(true);
       const token = await user.getIdToken();
+      console.log('📡 API Call: GET /artworks');
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/artworks`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      console.log('✅ Fetched', response.data.length, 'artworks');
       setArtworks(response.data);
     } catch (error) {
-      console.error('Error fetching artworks:', error);
-      Swal.fire('Error', 'Failed to load artworks', 'error');
+      console.error('❌ Error fetching artworks:', error);
+      console.error('Error details:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data
+      });
+      
+      let errorMsg = 'Failed to load artworks. ';
+      if (error.code === 'ERR_NETWORK') {
+        errorMsg += 'Server connection failed. Please ensure backend is running on port 5000.';
+      } else if (error.response?.status === 401) {
+        errorMsg += 'Authentication failed. Please log in again.';
+      } else {
+        errorMsg += error.message;
+      }
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed to Load Artworks',
+        text: errorMsg,
+        footer: 'Check console for detailed error logs'
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (artworkId) => {
+    console.log('🗑️ Delete request for artwork:', artworkId);
+    
     const result = await Swal.fire({
       title: 'Delete this artwork?',
       text: "This action cannot be undone!",
@@ -53,18 +79,48 @@ const AdminPortalArtworks = () => {
     });
 
     if (result.isConfirmed) {
+      console.log('✅ Delete confirmed by admin');
       try {
         const token = await user.getIdToken();
+        console.log('📡 API Call: DELETE /artworks/' + artworkId);
         await axios.delete(
           `${import.meta.env.VITE_API_URL}/artworks/${artworkId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        Swal.fire('Deleted!', 'Artwork has been removed.', 'success');
+        console.log('✅ Artwork deleted successfully');
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: 'Artwork has been removed from the platform.',
+          timer: 2000
+        });
         fetchAllArtworks();
       } catch (error) {
-        console.error('Error deleting artwork:', error);
-        Swal.fire('Error', 'Failed to delete artwork', 'error');
+        console.error('❌ Error deleting artwork:', error);
+        console.error('Delete error details:', {
+          artworkId,
+          status: error.response?.status,
+          message: error.message
+        });
+        
+        let errorMsg = 'Failed to delete artwork. ';
+        if (error.response?.status === 404) {
+          errorMsg += 'Artwork not found.';
+        } else if (error.response?.status === 403) {
+          errorMsg += 'You do not have permission to delete this artwork.';
+        } else {
+          errorMsg += error.message;
+        }
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Delete Failed',
+          text: errorMsg,
+          footer: 'Check console for detailed error logs'
+        });
       }
+    } else {
+      console.log('❌ Delete cancelled by admin');
     }
   };
 

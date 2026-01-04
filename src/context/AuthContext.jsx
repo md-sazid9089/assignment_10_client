@@ -105,25 +105,52 @@ export const AuthProvider = ({ children }) => {
 
   // Observer for auth state changes
   useEffect(() => {
+    console.log('🔍 Setting up Firebase auth state observer...')
+    
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        // Add role property to user object
-        // Default role is 'user', can be set to 'admin' for admin users
-        
-        // Set default role as 'user'
-        currentUser.role = 'user'
-        
-        // ADMIN PORTAL: Set admin role for specific admin email
-        // When admin123@gmail.com logs in, they get admin role and admin portal opens
-        if (currentUser.email === 'admin123@gmail.com') {
-          currentUser.role = 'admin'
+      try {
+        if (currentUser) {
+          console.log('👤 User authenticated:', currentUser.email)
+          
+          // Add role property to user object
+          // Default role is 'user', can be set to 'admin' for admin users
+          
+          // Set default role as 'user'
+          currentUser.role = 'user'
+          console.log('📝 Default role assigned: user')
+          
+          // ADMIN PORTAL: Set admin role for specific admin email
+          // When admin123@gmail.com logs in, they get admin role and admin portal opens
+          if (currentUser.email === 'admin123@gmail.com') {
+            currentUser.role = 'admin'
+            console.log('🔑 ADMIN ROLE ASSIGNED to:', currentUser.email)
+            console.log('✅ Admin privileges granted - user can access admin portal')
+          }
+          
+          console.log('👤 Current user object:', {
+            email: currentUser.email,
+            displayName: currentUser.displayName,
+            role: currentUser.role,
+            uid: currentUser.uid
+          })
+        } else {
+          console.log('🚪 No authenticated user - user logged out or not logged in')
         }
+        
+        setUser(currentUser)
+        setLoading(false)
+        console.log('✅ Auth state updated successfully')
+      } catch (error) {
+        console.error('❌ Error in auth state observer:', error)
+        console.error('Error details:', error.message)
+        setLoading(false)
       }
-      setUser(currentUser)
-      setLoading(false)
     })
 
-    return () => unsubscribe()
+    return () => {
+      console.log('🔌 Cleaning up auth state observer')
+      unsubscribe()
+    }
   }, [])
 
   const authInfo = {

@@ -45,19 +45,29 @@ const AdminPortalOverview = () => {
   });
 
   useEffect(() => {
+    console.log('📊 Admin Portal Overview: Initializing...');
+    console.log('👤 Admin user:', user?.email);
     fetchAdminStats();
   }, []);
 
   const fetchAdminStats = async () => {
+    console.log('🔄 Fetching admin statistics...');
     try {
       setLoading(true);
-      const token = await user.getIdToken();
       
-      // Fetch all artworks
+      // Get Firebase ID token for authentication
+      console.log('🔑 Getting Firebase ID token...');
+      const token = await user.getIdToken();
+      console.log('✅ Token acquired successfully');
+      
+      // Fetch all artworks from API
+      console.log('📡 Calling API:', `${import.meta.env.VITE_API_URL}/artworks`);
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/artworks`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      console.log('✅ API Response received:', response.data.length, 'artworks');
 
       const artworks = response.data;
       const uniqueUsers = new Set(artworks.map(art => art.userId)).size;
@@ -72,10 +82,40 @@ const AdminPortalOverview = () => {
         totalViews,
         recentArtworks: recent
       });
+      
+      console.log('✅ Admin stats calculated:', {
+        totalArtworks: artworks.length,
+        totalUsers: uniqueUsers,
+        totalLikes,
+        totalViews
+      });
     } catch (error) {
-      console.error('Error fetching admin stats:', error);
+      console.error('❌ Error fetching admin stats:', error);
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
+      
+      // Show user-friendly error alert
+      let errorMessage = '❌ Failed to Load Admin Statistics\n\n';
+      
+      if (error.response?.status === 401) {
+        errorMessage += 'Authentication failed. Please log in again.';
+      } else if (error.response?.status === 403) {
+        errorMessage += 'Access forbidden. You do not have admin permissions.';
+      } else if (error.code === 'ERR_NETWORK') {
+        errorMessage += 'Network error. Please check your connection and ensure the server is running on port 5000.';
+      } else if (error.response?.status === 500) {
+        errorMessage += 'Server error. Please check the backend server logs.';
+      } else {
+        errorMessage += error.message || 'Unknown error occurred.';
+      }
+      
+      alert(errorMessage);
     } finally {
       setLoading(false);
+      console.log('🏁 Admin stats loading completed');
     }
   };
 

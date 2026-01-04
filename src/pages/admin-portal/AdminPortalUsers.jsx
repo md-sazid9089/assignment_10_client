@@ -17,17 +17,22 @@ const AdminPortalUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+    console.log('👥 Admin Users Page: Initializing...');
     fetchUsers();
   }, []);
 
   const fetchUsers = async () => {
+    console.log('🔄 Fetching user statistics...');
     try {
       setLoading(true);
       const token = await user.getIdToken();
+      console.log('📡 API Call: GET /artworks (for user stats)');
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/artworks`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      console.log('✅ Processing', response.data.length, 'artworks to generate user stats');
 
       // Group by user
       const userStats = {};
@@ -52,11 +57,30 @@ const AdminPortalUsers = () => {
         }
       });
 
-      setUsers(Object.values(userStats));
+      const userList = Object.values(userStats);
+      setUsers(userList);
+      console.log('✅ User statistics calculated for', userList.length, 'users');
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error('❌ Error fetching user data:', error);
+      console.error('Error details:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data
+      });
+      
+      let errorMsg = 'Failed to load user statistics. ';
+      if (error.code === 'ERR_NETWORK') {
+        errorMsg += 'Cannot connect to server. Check if backend is running on port 5000.';
+      } else if (error.response?.status === 401) {
+        errorMsg += 'Authentication failed. Please log in again.';
+      } else {
+        errorMsg += error.message;
+      }
+      
+      alert('❌ Error Loading Users\n\n' + errorMsg + '\n\nCheck browser console for details.');
     } finally {
       setLoading(false);
+      console.log('🏁 User statistics loading completed');
     }
   };
 
